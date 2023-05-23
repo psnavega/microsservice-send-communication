@@ -1,4 +1,10 @@
-import { Controller, Post, Body, Param } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Param,
+  NotFoundException,
+} from '@nestjs/common';
 import { CommunicationSMSUseCase } from '@/communication/datas/use-cases/create-communicationSMS.usecase';
 import { CommunicationEmailUseCase } from '@/communication/datas/use-cases/create-communicationEmail.usecase';
 import { ICommunicationResponse } from '@/communication/domains/interfaces/communicationResponse';
@@ -33,9 +39,9 @@ export class CommunicationController {
         });
       } else if (type === 'sms') {
         return this.communicationSMSUseCase.execute({ to, body });
-      } else {
-        throw new Error('Invalid type communication');
       }
+
+      throw new NotFoundException('Type not found');
     } catch (err) {
       console.log(err);
       throw err;

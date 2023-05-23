@@ -13,14 +13,19 @@ export class CommunicationRepository
 
   constructor(private db: MongoService) {}
 
-  async create(
-    obj: CommunicationEmailEntity | CommunicationSMSEntity,
-  ): Promise<ObjectId> {
+  async create({
+    obj,
+    type,
+  }: {
+    obj: CommunicationEmailEntity | CommunicationSMSEntity;
+    type: 'email' | 'sms';
+  }): Promise<ObjectId> {
     try {
       const result = await (
         await this.db.getCollection('communication')
       ).insertOne({
         ...obj,
+        type,
         createdAt: new Date(),
         updatedAt: new Date(),
       });

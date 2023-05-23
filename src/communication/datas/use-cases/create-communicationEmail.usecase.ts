@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CommunicationEmailEntity } from '@/communication/domains/entities/communicationEmail.entity';
 import { CommunicationRepository } from '../repositories/communication.repository';
 import { ObjectId } from 'mongodb';
+import { ICommunicationResponse } from '@/communication/domains/interfaces/communicationResponse';
 
 @Injectable()
 export class CommunicationEmailUseCase {
@@ -19,9 +20,9 @@ export class CommunicationEmailUseCase {
     to: string;
     subject: string;
     body: string;
-  }): Promise<{ id: ObjectId; message: string }> {
+  }): Promise<ICommunicationResponse> {
     if (!to || !body || !subject || !from) {
-      throw new Error('Missing required fields');
+      throw new Error('Missing params');
     }
     const obj: CommunicationEmailEntity = {
       from,
@@ -29,10 +30,15 @@ export class CommunicationEmailUseCase {
       subject,
       body,
     };
-    const result = await this.communicationRepository.create(obj);
+    const { id } = await this.communicationRepository.create({
+      obj,
+      type: 'email',
+    });
+
+    const objId = new ObjectId(id);
 
     return {
-      id: result,
+      id: objId,
       message: 'Comunicação agendada com sucesso',
     };
   }
