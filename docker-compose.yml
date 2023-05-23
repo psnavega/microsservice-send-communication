@@ -1,0 +1,21 @@
+version: "2"
+services:
+  app:
+    container_name: vss-api
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
+    environment:
+      - DB_URL=$DB_URL
+    links:
+      - mongo
+  mongo:
+    container_name: vss-mongo
+    image: mongo:4.0
+    volumes:
+        - ./../mongodb/data:/data/db
+    ports:
+      - "27017:27017"
