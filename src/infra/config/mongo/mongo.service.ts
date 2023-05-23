@@ -17,7 +17,6 @@ export class MongoService {
     try {
       await this.client.connect();
       this.db = this.client.db();
-      this.logger.log('Connected to MongoDB');
     } catch (error) {
       this.logger.error('Failed to connect to MongoDB');
       throw error;
