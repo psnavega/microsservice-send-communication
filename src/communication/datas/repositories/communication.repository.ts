@@ -18,7 +18,7 @@ export class CommunicationRepository
   }: {
     obj: CommunicationEmailEntity | CommunicationSMSEntity;
     type: 'email' | 'sms';
-  }): Promise<any> {
+  }): Promise<{ id: string }> {
     try {
       const collection = await this.db.getCollection('communication');
 
