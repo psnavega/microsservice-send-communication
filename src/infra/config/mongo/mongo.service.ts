@@ -1,30 +1,38 @@
-import { Injectable } from '@nestjs/common';
-import { Db, MongoClient } from 'mongodb';
-import { Logger } from '@nestjs/common';
+import { Db, MongoClient, Collection } from 'mongodb';
 
-@Injectable()
 export class MongoService {
-  private db: Db;
-  private readonly client: MongoClient;
-  private readonly logger: Logger;
+  private db: Db | null;
+  private client: MongoClient | null;
 
   constructor() {
-    this.client = new MongoClient(process.env.DB_URL);
-    this.logger = new Logger(MongoService.name);
+    this.db = null;
+    this.client = null;
   }
 
   private async connect() {
+    const mongoUrl = process.env.MONGO_URL || 'mongodb://mongo:27017/vss_local';
     try {
-      await this.client.connect();
-      this.db = this.client.db();
+      const mongoClient = await MongoClient.connect(mongoUrl);
+
+      this.client = mongoClient;
+      this.db = mongoClient.db();
     } catch (error) {
-      this.logger.error('Failed to connect to MongoDB');
-      throw error;
+      throw new Error('Cannot connect to mongo');
     }
   }
 
-  async getCollection(collectionName: string) {
-    await this.connect();
+  async close(force = false) {
+    if (!this.db || !this.client) {
+      throw new Error('There is no connection');
+    }
+
+    await this.client.close(force);
+  }
+
+  async getCollection(collectionName: string): Promise<Collection> {
+    if (!this.db) {
+      await this.connect();
+    }
     if (!this.db) {
       throw new Error('Connection lost');
     }

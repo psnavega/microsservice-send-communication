@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 
 export interface ICommunicationResponse {
-  id: ObjectId;
+  id: string;
   message: string;
 }

@@ -3,7 +3,6 @@ import { CommunicationEmailEntity } from '@/communication/domains/entities/commu
 import { CommunicationSMSEntity } from '@/communication/domains/entities/communicationSMS.entity';
 import { MongoService } from '@/infra/config/mongo/mongo.service';
 import { CommunicationRepositoryInterface } from '@/communication/domains/repositories/communication.repository';
-import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class CommunicationRepository
@@ -19,18 +18,20 @@ export class CommunicationRepository
   }: {
     obj: CommunicationEmailEntity | CommunicationSMSEntity;
     type: 'email' | 'sms';
-  }): Promise<ObjectId> {
+  }): Promise<any> {
     try {
-      const result = await (
-        await this.db.getCollection('communication')
-      ).insertOne({
+      const collection = await this.db.getCollection('communication');
+
+      const { insertedId } = await collection.insertOne({
         ...obj,
         type,
         createdAt: new Date(),
         updatedAt: new Date(),
       });
 
-      return result.insertedId;
+      const id = insertedId.toHexString();
+
+      return { id };
     } catch (err) {
       console.log(err);
       throw err;
