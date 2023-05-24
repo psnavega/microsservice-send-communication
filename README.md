@@ -68,7 +68,6 @@ After that, run the following command at the root of the project:
 
 ```bash
 $ docker-compose up
-
 ```
 
 ## Folders architecture
@@ -93,7 +92,6 @@ Example
 
 ```bash
 POST localhost:3000/api/email/send
-
 ```
 
 Expected response
@@ -102,8 +100,23 @@ Expected response
     "id": "646ceda9cc7ba242a2b79b2c",
     "message": "Comunicação agendada com sucesso"
 }
-
 ```
+
+## Executing testing within Docker
+
+Once the container is up and running, execute the following command ***within the container application shell***
+```bash
+yarn test
+```
+
+### Coverage
+```bash
+yarn test:cov
+```
+
+***It is strongly recommended that every resource added to this microservice be properly tested - unit and integration when applicable***
+
+
 
 
 ## License
