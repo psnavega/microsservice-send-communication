@@ -1,5 +1,6 @@
+import { CommunicationStatus } from '@/shared/enums/communicationType.enum';
 import { ICommunicationSMS } from '../interfaces/communicationSMS.interface';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsDate, IsEnum, IsNotEmpty, IsString } from 'class-validator';
 
 export class CommunicationSMSEntity implements ICommunicationSMS {
   @IsNotEmpty()
@@ -9,4 +10,20 @@ export class CommunicationSMSEntity implements ICommunicationSMS {
   @IsNotEmpty()
   @IsString()
   body: string;
+
+  @IsNotEmpty()
+  @IsString()
+  type: string;
+
+  @IsEnum(CommunicationStatus)
+  status: CommunicationStatus;
+
+  @IsDate()
+  requestedAt: Date;
+
+  @IsDate()
+  sendedAt: Date;
+
+  @IsDate()
+  updatedAt?: Date;
 }

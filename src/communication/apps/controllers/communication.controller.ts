@@ -3,48 +3,55 @@ import {
   Post,
   Body,
   Param,
+  Get,
   NotFoundException,
 } from '@nestjs/common';
-import { CommunicationSMSUseCase } from '@/communication/datas/use-cases/create-communicationSMS.usecase';
-import { CommunicationEmailUseCase } from '@/communication/datas/use-cases/create-communicationEmail.usecase';
-import { ICommunicationResponse } from '@/communication/domains/interfaces/communicationResponse';
+import { ICommunicationResponse } from '@/communication/domains/interfaces/communicationResponse.interface';
 import { CommunicationEmailEntity } from '@/communication/domains/entities/communicationEmail.entity';
 import { CommunicationSMSEntity } from '@/communication/domains/entities/communicationSMS.entity';
+import { CommunicationType } from '@/shared/enums/communicationType.enum';
+import { SendCommunicationUseCase } from '@/communication/datas/use-cases/send-communication.usecase';
+import { GetCommunicationUseCase } from '@/communication/datas/use-cases/get-communication.usecase';
+import { CreateCommunicationEmailDto } from '@/communication/datas/dtos/create-communicationEmail.dto';
+import { CreateCommunicationSMSDto } from '@/communication/datas/dtos/create-communicationSMS.dto';
 
 @Controller('api')
 export class CommunicationController {
+  private sendCommunicationUseCase: SendCommunicationUseCase;
+  private getCommunnicationUseCase: GetCommunicationUseCase;
+
   constructor(
-    private readonly communicationEmailUseCase: CommunicationEmailUseCase,
-    private readonly communicationSMSUseCase: CommunicationSMSUseCase,
-  ) {}
+    sendCommunicationUseCase: SendCommunicationUseCase,
+    getCommunicationUseCase: GetCommunicationUseCase,
+  ) {
+    this.sendCommunicationUseCase = sendCommunicationUseCase;
+    this.getCommunnicationUseCase = getCommunicationUseCase;
+  }
 
   @Post(':type/send')
   async sendCommunication(
-    @Param('type') type: 'sms' | 'email',
+    @Param('type') type: CommunicationType,
     @Body()
-    communicationData: CommunicationEmailEntity | CommunicationSMSEntity,
+    communicationData: CreateCommunicationEmailDto | CreateCommunicationSMSDto,
   ): Promise<ICommunicationResponse> {
-    try {
-      const { to, body } = communicationData;
-
-      if (type === 'email') {
-        const emailData = communicationData as CommunicationEmailEntity;
-        const { subject, from } = emailData;
-
-        return this.communicationEmailUseCase.execute({
-          from,
-          to,
-          subject,
-          body,
-        });
-      } else if (type === 'sms') {
-        return this.communicationSMSUseCase.execute({ to, body });
-      }
-
-      throw new NotFoundException('Type not found');
-    } catch (err) {
-      console.log(err);
-      throw err;
+    if (!Object.values(CommunicationType).includes(type)) {
+      throw new NotFoundException('Communication type invalid');
     }
+
+    const reponse = await this.sendCommunicationUseCase.execute({
+      type,
+      communicationData,
+    });
+
+    return reponse;
+  }
+
+  @Get(':id/get')
+  async getCommunication(
+    @Param('id') id: string,
+  ): Promise<CommunicationEmailEntity | CommunicationSMSEntity> {
+    const response = await this.getCommunnicationUseCase.execute({ id });
+
+    return response;
   }
 }

@@ -9,4 +9,6 @@ export interface CommunicationRepositoryInterface {
     obj: ICommunicationEmail | ICommunicationSMS;
     type: 'sms' | 'email';
   }): Promise<{ id: string }>;
+
+  get({ id }: { id: string }): Promise<any>;
 }

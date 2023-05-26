@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CommunicationEmailEntity } from '@/communication/domains/entities/communicationEmail.entity';
-import { CommunicationSMSEntity } from '@/communication/domains/entities/communicationSMS.entity';
-import { MongoService } from '@/infra/config/mongo/mongo.service';
+import { MongoService } from '@/infra/mongo/mongo.service';
 import { CommunicationRepositoryInterface } from '@/communication/domains/repositories/communication.repository';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class CommunicationRepository
@@ -12,26 +11,30 @@ export class CommunicationRepository
 
   constructor(private db: MongoService) {}
 
-  async create({
-    obj,
-    type,
-  }: {
-    obj: CommunicationEmailEntity | CommunicationSMSEntity;
-    type: 'email' | 'sms';
-  }): Promise<{ id: string }> {
+  async create({ obj }: { obj: any }): Promise<{ id: string }> {
     try {
       const collection = await this.db.getCollection('communication');
 
       const { insertedId } = await collection.insertOne({
         ...obj,
-        type,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       });
 
       const id = insertedId.toHexString();
 
       return { id };
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  }
+
+  async get({ id }: { id: any }): Promise<any> {
+    try {
+      const collection = await this.db.getCollection('communication');
+
+      const response = await collection.findOne({ _id: new ObjectId(id) });
+
+      return { response };
     } catch (err) {
       console.log(err);
       throw err;
