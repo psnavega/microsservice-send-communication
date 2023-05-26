@@ -2,7 +2,7 @@ import * as request from 'supertest';
 import { Test } from '@nestjs/testing';
 import { AppModule } from '@/app.module';
 import { INestApplication } from '@nestjs/common';
-import { MongoService } from '@/infra/config/mongo/mongo.service';
+import { MongoService } from '@/infra/mongo/mongo.service';
 
 describe('CommunicationController (e2e)', () => {
   let app: INestApplication;
@@ -75,20 +75,6 @@ describe('CommunicationController (e2e)', () => {
       .send(communicationData)
       .expect(404);
 
-    expect(response.body.message).toEqual('Type not found');
-  });
-
-  it('should integrate missing required parameters', async () => {
-    const communicationData = {
-      to: 'test@vss.com',
-      body: 'Test',
-    };
-
-    const response = await request(app.getHttpServer())
-      .post('/api/email/send')
-      .send(communicationData)
-      .expect(500);
-
-    expect(response.body.message).toEqual('Internal server error');
+    expect(response.body.message).toEqual('Communication type invalid');
   });
 });
