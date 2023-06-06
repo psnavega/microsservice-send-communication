@@ -5,12 +5,15 @@ import { CommunicationEmailEntity } from '@/communication/domains/entities/commu
 import { CommunicationSMSEntity } from '@/communication/domains/entities/communicationSMS.entity';
 import { ObjectId } from 'mongodb';
 import { CommunicationStatus } from '@/shared/enums/communicationType.enum';
+import { LoggerService } from '@/infra/logger/logger.service';
 
 let communicationRepository: CommunicationRepository;
 let db: MongoService;
+let loggerService: LoggerService;
 
 beforeAll(async () => {
-  db = new MongoService();
+  loggerService = new LoggerService();
+  db = new MongoService(loggerService);
   communicationRepository = new CommunicationRepository(db);
 });
 
@@ -55,32 +58,56 @@ describe('CommunicationRepository', () => {
     expect(insertedDocument.requestedAt).toBeDefined();
     expect(insertedDocument.sendedAt).toBeDefined();
   });
-});
 
-it('should create a new register of SMS at database', async () => {
-  const communicationData: CommunicationSMSEntity = {
-    to: 'receiver@receiver.com',
-    body: 'Test Body',
-    type: 'sms',
-    status: CommunicationStatus.SCHEDULED,
-    requestedAt: new Date(),
-    sendedAt: new Date(),
-  };
+  it('should create a new register of SMS at database', async () => {
+    const communicationData: CommunicationSMSEntity = {
+      to: 'receiver@receiver.com',
+      body: 'Test Body',
+      type: 'sms',
+      status: CommunicationStatus.SCHEDULED,
+      requestedAt: new Date(),
+      sendedAt: new Date(),
+    };
 
-  const { id } = await communicationRepository.create({
-    obj: communicationData,
+    const { id } = await communicationRepository.create({
+      obj: communicationData,
+    });
+
+    const insertedDocument = await (
+      await db.getCollection('communication')
+    ).findOne({
+      _id: new ObjectId(id),
+    });
+
+    expect(insertedDocument).toBeDefined();
+    expect(insertedDocument.type).toBe('sms');
+    expect(insertedDocument.to).toBe(communicationData.to);
+    expect(insertedDocument.body).toBe(communicationData.body);
+    expect(insertedDocument.requestedAt).toBeDefined();
+    expect(insertedDocument.sendedAt).toBeDefined();
   });
 
-  const insertedDocument = await (
-    await db.getCollection('communication')
-  ).findOne({
-    _id: new ObjectId(id),
-  });
+  it('should get a register at database', async () => {
+    const communicationData: CommunicationSMSEntity = {
+      to: 'receiver@receiver.com',
+      body: 'Test Body',
+      type: 'sms',
+      status: CommunicationStatus.SCHEDULED,
+      requestedAt: new Date(),
+      sendedAt: new Date(),
+    };
 
-  expect(insertedDocument).toBeDefined();
-  expect(insertedDocument.type).toBe('sms');
-  expect(insertedDocument.to).toBe(communicationData.to);
-  expect(insertedDocument.body).toBe(communicationData.body);
-  expect(insertedDocument.requestedAt).toBeDefined();
-  expect(insertedDocument.sendedAt).toBeDefined();
+    const { id } = await communicationRepository.create({
+      obj: communicationData,
+    });
+
+    const { response } = await communicationRepository.get({ id });
+
+    expect(response).toBeDefined();
+    expect(response.type).toBe('sms');
+    expect(response.to).toBe(communicationData.to);
+    expect(response.body).toBe(communicationData.body);
+    expect(response.requestedAt).toBeDefined();
+    expect(response.sendedAt).toBeDefined();
+  });
 });

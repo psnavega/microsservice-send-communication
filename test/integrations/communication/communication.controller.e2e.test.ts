@@ -15,12 +15,9 @@ describe('CommunicationController (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
-  });
 
-  afterEach(async () => {
-    db = new MongoService();
-    const collection = await db.getCollection('communication');
-    await collection.deleteMany({});
+    db = moduleFixture.get<MongoService>(MongoService);
+    await db.connect();
   });
 
   afterAll(async () => {

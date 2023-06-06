@@ -12,32 +12,42 @@ export class CommunicationRepository
   constructor(private db: MongoService) {}
 
   async create({ obj }: { obj: any }): Promise<{ id: string }> {
-    try {
-      const collection = await this.db.getCollection('communication');
+    const collection = await this.db.getCollection('communication');
 
-      const { insertedId } = await collection.insertOne({
-        ...obj,
-      });
+    const { insertedId } = await collection.insertOne({
+      ...obj,
+    });
 
-      const id = insertedId.toHexString();
-
-      return { id };
-    } catch (err) {
-      console.log(err);
-      throw err;
-    }
+    return { id: insertedId.toHexString() };
   }
 
-  async get({ id }: { id: any }): Promise<any> {
-    try {
-      const collection = await this.db.getCollection('communication');
+  async get({ id }: { id: string }): Promise<any> {
+    const collection = await this.db.getCollection('communication');
 
-      const response = await collection.findOne({ _id: new ObjectId(id) });
+    const response = await collection.findOne({ _id: new ObjectId(id) });
 
-      return { response };
-    } catch (err) {
-      console.log(err);
-      throw err;
+    return { response };
+  }
+
+  async update({
+    id,
+    fieldsToUpdate,
+  }: {
+    id: string;
+    fieldsToUpdate: { [key: string]: any };
+  }): Promise<any> {
+    const collection = await this.db.getCollection('communication');
+    const updateObject = { $set: {} };
+
+    for (const [key, value] of Object.entries(fieldsToUpdate)) {
+      updateObject.$set[key] = value;
     }
+
+    const response = await collection.updateOne(
+      { _id: new ObjectId(id) },
+      updateObject,
+    );
+
+    return { response };
   }
 }

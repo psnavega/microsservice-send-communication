@@ -1,4 +1,4 @@
-version: "2"
+version: "3.3"
 services:
   app:
     container_name: vss-api
@@ -8,10 +8,22 @@ services:
     volumes:
       - .:/usr/src/app
       - ./node_modules:/usr/src/app/node_modules
-    env_file:
-      - .env
+    environment:
+      - GOOGLE_PUBSUB_TOPIC_NAME=${GOOGLE_PUBSUB_TOPIC_NAME}
+      - GOOGLE_SUBSCRIPTION_NAME=${GOOGLE_SUBSCRIPTION_NAME}
+      - GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_APPLICATION_CREDENTIALS}
+      - GOOGLE_PROJECT_ID=${GOOGLE_PROJECT_ID}
+      - GOOGLE_KEY_FILE=${GOOGLE_KEY_FILE}
+      - PORT=${PORT}
+      - MONGO_URL=${MONGO_URL}
+      - ELASTICSEARCH_NODE=${ELASTICSEARCH_NODE}
+      - NODE_ENV=${NODE_ENV}
+      - SENDGRID_API_KEY=${SENDGRID_API_KEY}
+      - ZENVIA_API_KEY=${ZENVIA_API_KEY}
+      - ZENVIA_NUMBER=${ZENVIA_NUMBER}
     links:
       - mongo
+      - elasticsearch
   mongo:
     container_name: vss-mongo
     image: mongo:4.0
@@ -19,3 +31,11 @@ services:
         - ./../mongodb/data:/data/db
     ports:
       - "27017:27017"
+  elasticsearch:
+    container_name: vss-elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - discovery.type=single-node

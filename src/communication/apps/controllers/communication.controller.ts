@@ -10,10 +10,8 @@ import { ICommunicationResponse } from '@/communication/domains/interfaces/commu
 import { CommunicationEmailEntity } from '@/communication/domains/entities/communicationEmail.entity';
 import { CommunicationSMSEntity } from '@/communication/domains/entities/communicationSMS.entity';
 import { CommunicationType } from '@/shared/enums/communicationType.enum';
-import { SendCommunicationUseCase } from '@/communication/datas/use-cases/send-communication.usecase';
+import { SendCommunicationUseCase } from '@/communication/datas/use-cases/create-communication.usecase';
 import { GetCommunicationUseCase } from '@/communication/datas/use-cases/get-communication.usecase';
-import { CreateCommunicationEmailDto } from '@/communication/datas/dtos/create-communicationEmail.dto';
-import { CreateCommunicationSMSDto } from '@/communication/datas/dtos/create-communicationSMS.dto';
 
 @Controller('api')
 export class CommunicationController {
@@ -32,7 +30,7 @@ export class CommunicationController {
   async sendCommunication(
     @Param('type') type: CommunicationType,
     @Body()
-    communicationData: CreateCommunicationEmailDto | CreateCommunicationSMSDto,
+    communicationData: any,
   ): Promise<ICommunicationResponse> {
     if (!Object.values(CommunicationType).includes(type)) {
       throw new NotFoundException('Communication type invalid');
@@ -51,6 +49,8 @@ export class CommunicationController {
     @Param('id') id: string,
   ): Promise<CommunicationEmailEntity | CommunicationSMSEntity> {
     const response = await this.getCommunnicationUseCase.execute({ id });
+
+    if (!response) throw new NotFoundException('Communication not found');
 
     return response;
   }

@@ -1,8 +1,18 @@
 import { CommunicationStatus } from '@/shared/enums/communicationType.enum';
 import { ICommunicationEmail } from '../interfaces/communicationEmail.interface';
-import { IsDate, IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsDate,
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CommunicationEmailEntity implements ICommunicationEmail {
+  @IsOptional()
+  id?: string;
+
   @IsEmail()
   from: string;
 
