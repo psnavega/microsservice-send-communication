@@ -1,15 +1,12 @@
 import { Client } from '@elastic/elasticsearch';
 import { Injectable } from '@nestjs/common';
 import * as moment from 'moment';
-import { LoggerService } from '../logger/logger.service';
 
 @Injectable()
 export class ElasticsearchService {
   private client: Client;
-  private loggerService: LoggerService;
 
-  constructor(loggerService: LoggerService) {
-    this.loggerService = loggerService;
+  constructor() {
     this.client = new Client({
       node: process.env.ELASTICSEARCH_NODE || 'http://elasticsearch:9200',
     });
@@ -30,7 +27,6 @@ export class ElasticsearchService {
         });
       }
     } catch (err) {
-      this.loggerService.error('Error while indexing log: ', err);
       throw err;
     }
   }

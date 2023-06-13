@@ -29,7 +29,7 @@ describe('RobotController', () => {
     it('should call updateCommunicationUseCase with the provided communicationData', async () => {
       const mockExecute = jest
         .spyOn(updateCommunicationUseCase, 'execute')
-        .mockResolvedValueOnce({});
+        .mockResolvedValueOnce({ message: 'OK' });
 
       const communicationData = {
         id: '124123',

@@ -4,18 +4,15 @@ import {
   CommunicationStatus,
   CommunicationType,
 } from '@/shared/enums/communicationType.enum';
-import { CreateCommunicationEmailDto } from '../dtos/create-communicationEmail.dto';
-import { CreateCommunicationSMSDto } from '../dtos/create-communicationSMS.dto';
 import { PubSubService } from '@/infra/pubsub/pubsub.service';
 import { IPubSubService } from '@/shared/interfaces/pubSub.interface';
-import { LoggerService } from '@/infra/logger/logger.service';
+import { ICreateCommunication } from '@/shared/interfaces/createCommunication.interface';
 
 @Injectable()
-export class SendCommunicationUseCase {
+export class CreateCommunicationUseCase {
   constructor(
     private readonly communicationRepository: CommunicationRepository,
     @Inject(PubSubService) private readonly queueService: IPubSubService,
-    private readonly loggerService: LoggerService,
   ) {}
 
   async execute({
@@ -23,7 +20,7 @@ export class SendCommunicationUseCase {
     communicationData,
   }: {
     type: CommunicationType;
-    communicationData: CreateCommunicationEmailDto | CreateCommunicationSMSDto;
+    communicationData: ICreateCommunication;
   }): Promise<{ id: string; message: string }> {
     const obj = {
       ...communicationData,
@@ -36,10 +33,13 @@ export class SendCommunicationUseCase {
 
     const { id } = await this.communicationRepository.create({ obj });
 
+    Object.assign(obj, { id });
+
     try {
-      await this.queueService.sendMessage({ message: { ...obj, id } });
+      await this.queueService.sendMessage({
+        message: obj,
+      });
     } catch (err) {
-      this.loggerService.error('Error while sending message to queue: ', err);
       await this.communicationRepository.update({
         id,
         fieldsToUpdate: {

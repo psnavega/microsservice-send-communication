@@ -1,16 +1,17 @@
 import { CommunicationStatus } from '@/shared/enums/communicationType.enum';
-import { ICommunicationEmail } from '../interfaces/communicationEmail.interface';
 import {
   IsDate,
   IsEmail,
   IsEnum,
+  IsMongoId,
   IsNotEmpty,
-  IsOptional,
   IsString,
 } from 'class-validator';
+import { ICreateCommunication } from '@/shared/interfaces/createCommunication.interface';
 
-export class CommunicationEmailEntity implements ICommunicationEmail {
-  @IsOptional()
+export class CommunicationEmailEntity implements ICreateCommunication {
+  @IsNotEmpty()
+  @IsMongoId()
   id?: string;
 
   @IsEmail()
@@ -33,6 +34,9 @@ export class CommunicationEmailEntity implements ICommunicationEmail {
 
   @IsEnum(CommunicationStatus)
   status: CommunicationStatus;
+
+  @IsString()
+  provider: string;
 
   @IsDate()
   requestedAt: Date;

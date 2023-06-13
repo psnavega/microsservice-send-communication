@@ -1,6 +1,5 @@
-import { ICommunicationSMS } from '../interfaces/communicationSMS.interface';
-import { ICommunicationEmail } from '../interfaces/communicationEmail.interface';
 import { CommunicationType } from '@/shared/enums/communicationType.enum';
+import { ICreateCommunication } from '@/shared/interfaces/createCommunication.interface';
 
 interface UpdateCommunicationFields {
   id: string;
@@ -12,7 +11,7 @@ export interface CommunicationRepositoryInterface {
     obj,
     type,
   }: {
-    obj: ICommunicationEmail | ICommunicationSMS;
+    obj: ICreateCommunication;
     type: CommunicationType;
   }): Promise<{ id: string }>;
 

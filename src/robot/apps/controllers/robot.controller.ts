@@ -12,8 +12,12 @@ export class RobotController {
   @Post('communication/send')
   async sendCommunication(
     @Body()
-    communicationData: any,
-  ): Promise<any> {
+    payload: any,
+  ): Promise<{ message: string }> {
+    const communicationData = JSON.parse(
+      Buffer.from(payload.message.data, 'base64').toString(),
+    );
+
     const response = await this.updateCommunicationUseCase.execute(
       communicationData,
     );

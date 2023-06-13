@@ -25,6 +25,20 @@ export class AppLoggerMiddleware implements NestMiddleware {
       }
     });
 
+    response.on('finish', () => {
+      if (response.statusCode >= 400) {
+        const errorMessage = `Error ${response.statusCode} - ${method} ${path}`;
+        this.logger.error(errorMessage);
+      }
+    });
+
+    response.on('close', () => {
+      if (!response.headersSent) {
+        const errorMessage = `Uncaught error - ${method} ${path}`;
+        this.logger.error(errorMessage);
+      }
+    });
+
     next();
   }
 }

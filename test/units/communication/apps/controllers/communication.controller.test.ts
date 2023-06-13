@@ -1,28 +1,26 @@
 import { CommunicationController } from '@/communication/apps/controllers/communication.controller';
 import { CommunicationRepository } from '@/communication/datas/repositories/communication.repository';
 import { GetCommunicationUseCase } from '@/communication/datas/use-cases/get-communication.usecase';
-import { SendCommunicationUseCase } from '@/communication/datas/use-cases/create-communication.usecase';
+import { CreateCommunicationUseCase } from '@/communication/datas/use-cases/create-communication.usecase';
 import { PubSubService } from '@/infra/pubsub/pubsub.service';
 import {
   CommunicationStatus,
   CommunicationType,
 } from '@/shared/enums/communicationType.enum';
 import { NotFoundException } from '@nestjs/common';
-import { LoggerService } from '@/infra/logger/logger.service';
+import { CommunicationSMSEntity } from '@/communication/domains/entities/communicationSMS.entity';
 
 describe.only('CommunicationController', () => {
   let communicationController: CommunicationController;
-  let sendCommunicationUseCase: SendCommunicationUseCase;
+  let createCommunicationUseCase: CreateCommunicationUseCase;
   let getCommunicationUseCase: GetCommunicationUseCase;
   let communicationRepository: CommunicationRepository;
   let queueService: PubSubService;
-  let loggerService: LoggerService;
 
   beforeEach(() => {
-    sendCommunicationUseCase = new SendCommunicationUseCase(
+    createCommunicationUseCase = new CreateCommunicationUseCase(
       communicationRepository,
       queueService,
-      loggerService,
     );
 
     getCommunicationUseCase = new GetCommunicationUseCase(
@@ -30,7 +28,7 @@ describe.only('CommunicationController', () => {
     );
 
     communicationController = new CommunicationController(
-      sendCommunicationUseCase,
+      createCommunicationUseCase,
       getCommunicationUseCase,
     );
   });
@@ -41,7 +39,7 @@ describe.only('CommunicationController', () => {
 
   it('should call the execute send communication use case', async () => {
     const executeSpy = jest
-      .spyOn(sendCommunicationUseCase, 'execute')
+      .spyOn(createCommunicationUseCase, 'execute')
       .mockResolvedValue({
         id: '12345',
         message: 'Comunicação agendada com sucesso',
@@ -82,6 +80,8 @@ describe.only('CommunicationController', () => {
   });
 
   it('should call the execute get communication use case', async () => {
+    const id = '12345';
+
     const executeSpy = jest
       .spyOn(getCommunicationUseCase, 'execute')
       .mockResolvedValue({
@@ -93,11 +93,11 @@ describe.only('CommunicationController', () => {
         requestedAt: new Date(),
         sendedAt: new Date(),
         updatedAt: new Date(),
-      });
+      } as CommunicationSMSEntity);
 
-    const id = '12345';
-
-    const result = await communicationController.getCommunication(id);
+    const result = (await communicationController.getCommunication(
+      id,
+    )) as CommunicationSMSEntity;
 
     expect(executeSpy).toHaveBeenCalledWith({ id });
     expect(result.id).toBe('12345');

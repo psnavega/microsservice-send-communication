@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { CommunicationController } from './apps/controllers/communication.controller';
 import { CommunicationRepository } from './datas/repositories/communication.repository';
 import { MongoModule } from '@/infra/mongo/mongo.module';
-import { SendCommunicationUseCase } from './datas/use-cases/create-communication.usecase';
+import { CreateCommunicationUseCase } from './datas/use-cases/create-communication.usecase';
 import { PubSubModule } from '@/infra/pubsub/pubsub.module';
 import { GetCommunicationUseCase } from './datas/use-cases/get-communication.usecase';
 import { LoggerModule } from '@/infra/logger/logger.module';
@@ -24,7 +24,7 @@ import { MailService } from '@sendgrid/mail';
   controllers: [CommunicationController],
   providers: [
     CommunicationRepository,
-    SendCommunicationUseCase,
+    CreateCommunicationUseCase,
     GetCommunicationUseCase,
     CommunicationStrategy,
     SendgridService,

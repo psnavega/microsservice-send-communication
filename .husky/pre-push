@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-yarn husky-pre-push
+yarn enforce-branch-name '(hotfix|feature|release|bugfix|chore|docs|refactor|test)/.+' -- ignore 'master|develop|main'
+yarn lint && yarn build

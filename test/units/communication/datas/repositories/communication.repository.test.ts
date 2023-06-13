@@ -29,10 +29,12 @@ afterAll(async () => {
 describe('CommunicationRepository', () => {
   it('should create a new register of Email at database', async () => {
     const communicationData: CommunicationEmailEntity = {
+      id: '',
       to: 'receiver@receiver.com',
       body: 'Test Body',
       subject: 'My subject',
       from: 'My from',
+      provider: 'email',
       type: 'email',
       status: CommunicationStatus.SCHEDULED,
       requestedAt: new Date(),
@@ -61,8 +63,10 @@ describe('CommunicationRepository', () => {
 
   it('should create a new register of SMS at database', async () => {
     const communicationData: CommunicationSMSEntity = {
+      id: '',
       to: 'receiver@receiver.com',
       body: 'Test Body',
+      provider: 'zenvia',
       type: 'sms',
       status: CommunicationStatus.SCHEDULED,
       requestedAt: new Date(),
@@ -89,9 +93,11 @@ describe('CommunicationRepository', () => {
 
   it('should get a register at database', async () => {
     const communicationData: CommunicationSMSEntity = {
+      id: '',
       to: 'receiver@receiver.com',
       body: 'Test Body',
       type: 'sms',
+      provider: 'zenvia',
       status: CommunicationStatus.SCHEDULED,
       requestedAt: new Date(),
       sendedAt: new Date(),

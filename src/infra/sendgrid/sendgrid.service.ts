@@ -1,14 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { MailService } from '@sendgrid/mail';
-import { LoggerService } from '../logger/logger.service';
 import { ICommunicationStrategy } from '@/communication/domains/interfaces/communicationStrategy.interface';
 
 @Injectable()
 export class SendgridService implements ICommunicationStrategy {
-  constructor(
-    private readonly logger: LoggerService,
-    private readonly mailService: MailService,
-  ) {
+  constructor(private readonly mailService: MailService) {
     this.mailService.setApiKey(process.env.SENDGRID_API_KEY);
   }
 
@@ -22,18 +18,18 @@ export class SendgridService implements ICommunicationStrategy {
     body: string;
     from: string;
     subject: string;
-  }): Promise<void> {
+  }): Promise<{ provider: string }> {
     const emailData = {
       to,
       from,
       subject,
-      text: body,
+      html: body,
     };
 
     try {
       await this.mailService.send(emailData);
+      return { provider: 'sendgrid' };
     } catch (error) {
-      this.logger.error(error, error.trace);
       throw new Error('Failed to send email');
     }
   }

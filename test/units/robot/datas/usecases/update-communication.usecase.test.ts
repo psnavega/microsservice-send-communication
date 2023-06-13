@@ -3,12 +3,10 @@ import { CommunicationRepository } from '@/communication/datas/repositories/comm
 import { CommunicationStatus } from '@/shared/enums/communicationType.enum';
 import { Test } from '@nestjs/testing';
 import { AppModule } from '@/app.module';
-import { LoggerService } from '@/infra/logger/logger.service';
 
 describe('UpdateCommunicationUseCase', () => {
   let updateCommunicationUseCase: UpdateCommunicationUseCase;
   let communicationRepository: CommunicationRepository;
-  let loggerService: LoggerService;
 
   beforeEach(async () => {
     const moduleFixture = await Test.createTestingModule({
@@ -21,7 +19,6 @@ describe('UpdateCommunicationUseCase', () => {
     communicationRepository = moduleFixture.get<CommunicationRepository>(
       CommunicationRepository,
     );
-    loggerService = moduleFixture.get<LoggerService>(LoggerService);
   });
 
   it('should update communication status to SENT', async () => {
@@ -30,7 +27,9 @@ describe('UpdateCommunicationUseCase', () => {
       .mockResolvedValueOnce({});
 
     const communicationData = {
-      id: 123456,
+      id: '123456',
+      to: 'vss@vss.com',
+      body: 'Body default',
     };
 
     await updateCommunicationUseCase.execute(communicationData);

@@ -25,7 +25,7 @@ export class MongoService {
 
       return this.db;
     } catch (error) {
-      throw new Error('Cannot connect to MongoDB');
+      throw new Error(`Cannot connect to MongoDB: ${error}`);
     }
   }
 

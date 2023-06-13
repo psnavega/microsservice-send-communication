@@ -5,6 +5,7 @@ import { PubSubModule } from './infra/pubsub/pubsub.module';
 import { AppLoggerMiddleware } from './middlewares/logger';
 import { LoggerModule } from './infra/logger/logger.module';
 import { RobotModule } from './robot/robot.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -15,7 +16,12 @@ import { RobotModule } from './robot/robot.module';
     RobotModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: AppLoggerMiddleware,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {

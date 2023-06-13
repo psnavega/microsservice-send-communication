@@ -7,22 +7,22 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { ICommunicationResponse } from '@/communication/domains/interfaces/communicationResponse.interface';
-import { CommunicationEmailEntity } from '@/communication/domains/entities/communicationEmail.entity';
-import { CommunicationSMSEntity } from '@/communication/domains/entities/communicationSMS.entity';
 import { CommunicationType } from '@/shared/enums/communicationType.enum';
-import { SendCommunicationUseCase } from '@/communication/datas/use-cases/create-communication.usecase';
+import { CreateCommunicationUseCase } from '@/communication/datas/use-cases/create-communication.usecase';
 import { GetCommunicationUseCase } from '@/communication/datas/use-cases/get-communication.usecase';
+import { getValidatorSchema } from '@/communication/domains/validators/communication.validator';
+import { ICreateCommunication } from '@/shared/interfaces/createCommunication.interface';
 
 @Controller('api')
 export class CommunicationController {
-  private sendCommunicationUseCase: SendCommunicationUseCase;
+  private CreateCommunicationUseCase: CreateCommunicationUseCase;
   private getCommunnicationUseCase: GetCommunicationUseCase;
 
   constructor(
-    sendCommunicationUseCase: SendCommunicationUseCase,
+    CreateCommunicationUseCase: CreateCommunicationUseCase,
     getCommunicationUseCase: GetCommunicationUseCase,
   ) {
-    this.sendCommunicationUseCase = sendCommunicationUseCase;
+    this.CreateCommunicationUseCase = CreateCommunicationUseCase;
     this.getCommunnicationUseCase = getCommunicationUseCase;
   }
 
@@ -32,11 +32,11 @@ export class CommunicationController {
     @Body()
     communicationData: any,
   ): Promise<ICommunicationResponse> {
-    if (!Object.values(CommunicationType).includes(type)) {
-      throw new NotFoundException('Communication type invalid');
-    }
+    const schema = getValidatorSchema(type);
 
-    const reponse = await this.sendCommunicationUseCase.execute({
+    await schema.validateAsync(communicationData);
+
+    const reponse = await this.CreateCommunicationUseCase.execute({
       type,
       communicationData,
     });
@@ -47,7 +47,7 @@ export class CommunicationController {
   @Get(':id/get')
   async getCommunication(
     @Param('id') id: string,
-  ): Promise<CommunicationEmailEntity | CommunicationSMSEntity> {
+  ): Promise<ICreateCommunication> {
     const response = await this.getCommunnicationUseCase.execute({ id });
 
     if (!response) throw new NotFoundException('Communication not found');

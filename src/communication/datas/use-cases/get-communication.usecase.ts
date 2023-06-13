@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CommunicationRepository } from '../repositories/communication.repository';
-import { CommunicationEmailEntity } from '@/communication/domains/entities/communicationEmail.entity';
-import { CommunicationSMSEntity } from '@/communication/domains/entities/communicationSMS.entity';
+import { ICreateCommunication } from '@/shared/interfaces/createCommunication.interface';
 
 @Injectable()
 export class GetCommunicationUseCase {
@@ -9,11 +8,7 @@ export class GetCommunicationUseCase {
     private readonly communicationRepository: CommunicationRepository,
   ) {}
 
-  async execute({
-    id,
-  }: {
-    id: string;
-  }): Promise<CommunicationEmailEntity | CommunicationSMSEntity> {
+  async execute({ id }: { id: string }): Promise<ICreateCommunication> {
     const { response } = await this.communicationRepository.get({ id });
 
     return response;

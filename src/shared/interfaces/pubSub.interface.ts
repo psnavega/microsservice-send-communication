@@ -1,10 +1,5 @@
-import { CommunicationEmailEntity } from '@/communication/domains/entities/communicationEmail.entity';
-import { CommunicationSMSEntity } from '@/communication/domains/entities/communicationSMS.entity';
+import { ICreateCommunication } from './createCommunication.interface';
 
 export interface IPubSubService {
-  sendMessage({
-    message,
-  }: {
-    message: CommunicationEmailEntity | CommunicationSMSEntity;
-  }): Promise<void>;
+  sendMessage({ message }: { message: ICreateCommunication }): Promise<void>;
 }

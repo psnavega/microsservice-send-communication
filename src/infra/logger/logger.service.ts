@@ -3,32 +3,31 @@ import { ILogger } from '@/shared/interfaces/logger.interface';
 import { configureWinston } from './config';
 import { Injectable } from '@nestjs/common';
 
-let logger: ILogger;
-
 @Injectable()
 export class LoggerService implements ILogger {
-  private logger = winston.createLogger(configureWinston());
+  private logger: winston.Logger;
 
-  static getInstance(): ILogger {
-    if (!logger) {
-      logger = new LoggerService();
-    }
-    return logger;
+  constructor() {
+    this.logger = winston.createLogger(configureWinston());
   }
 
   log(message: string): void {
     this.logger.log('info', message);
   }
-  error(message: string, trace: string): void {
-    this.logger.error('error', message, trace);
+
+  error(message: string, stack?: string): void {
+    this.logger.error(message, { stack });
   }
+
   warn(message: string): void {
-    this.logger.warn('warn', message);
+    this.logger.warn(message);
   }
+
   debug(message: string): void {
-    this.logger.debug('debug', message);
+    this.logger.debug(message);
   }
+
   verbose(message: string): void {
-    this.logger.verbose('verbose', message);
+    this.logger.verbose(message);
   }
 }

@@ -1,4 +1,4 @@
-import { SendCommunicationUseCase } from '@/communication/datas/use-cases/create-communication.usecase';
+import { CreateCommunicationUseCase } from '@/communication/datas/use-cases/create-communication.usecase';
 import { CommunicationRepository } from '@/communication/datas/repositories/communication.repository';
 import {
   CommunicationStatus,
@@ -8,8 +8,8 @@ import { PubSubService } from '@/infra/pubsub/pubsub.service';
 import { MongoService } from '@/infra/mongo/mongo.service';
 import { LoggerService } from '@/infra/logger/logger.service';
 
-describe('sendCommunicationUseCase', () => {
-  let sendCommunicationUseCase: SendCommunicationUseCase;
+describe('CreateCommunicationUseCase', () => {
+  let createCommunicationUseCase: CreateCommunicationUseCase;
   let communicationRepository: CommunicationRepository;
   let queueService: PubSubService;
   let mongoService: MongoService;
@@ -22,12 +22,11 @@ describe('sendCommunicationUseCase', () => {
 
     communicationRepository = new CommunicationRepository(mongoService);
 
-    queueService = new PubSubService(loggerService);
+    queueService = new PubSubService();
 
-    sendCommunicationUseCase = new SendCommunicationUseCase(
+    createCommunicationUseCase = new CreateCommunicationUseCase(
       communicationRepository,
       queueService,
-      loggerService,
     );
   });
 
@@ -54,7 +53,7 @@ describe('sendCommunicationUseCase', () => {
       .spyOn(communicationRepository, 'create')
       .mockResolvedValue({ id: '6474119518269cd61e381473' });
 
-    await sendCommunicationUseCase.execute({
+    await createCommunicationUseCase.execute({
       type: CommunicationType.EMAIL,
       communicationData,
     });

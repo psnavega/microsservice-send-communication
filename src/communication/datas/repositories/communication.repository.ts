@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { MongoService } from '@/infra/mongo/mongo.service';
 import { CommunicationRepositoryInterface } from '@/communication/domains/repositories/communication.repository';
 import { ObjectId } from 'mongodb';
+import { ICreateCommunication } from '@/shared/interfaces/createCommunication.interface';
 
 @Injectable()
 export class CommunicationRepository
@@ -11,7 +12,11 @@ export class CommunicationRepository
 
   constructor(private db: MongoService) {}
 
-  async create({ obj }: { obj: any }): Promise<{ id: string }> {
+  async create({
+    obj,
+  }: {
+    obj: ICreateCommunication;
+  }): Promise<{ id: string }> {
     const collection = await this.db.getCollection('communication');
 
     const { insertedId } = await collection.insertOne({

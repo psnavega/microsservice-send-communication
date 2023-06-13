@@ -1,16 +1,17 @@
 import { CommunicationStatus } from '@/shared/enums/communicationType.enum';
-import { ICommunicationSMS } from '../interfaces/communicationSMS.interface';
 import {
   IsDate,
   IsEnum,
+  IsMongoId,
   IsNotEmpty,
-  IsOptional,
   IsString,
 } from 'class-validator';
+import { ICreateCommunication } from '@/shared/interfaces/createCommunication.interface';
 
-export class CommunicationSMSEntity implements ICommunicationSMS {
-  @IsOptional()
-  id?: string;
+export class CommunicationSMSEntity implements ICreateCommunication {
+  @IsNotEmpty()
+  @IsMongoId()
+  id: string;
 
   @IsNotEmpty()
   @IsString()
@@ -26,6 +27,9 @@ export class CommunicationSMSEntity implements ICommunicationSMS {
 
   @IsEnum(CommunicationStatus)
   status: CommunicationStatus;
+
+  @IsString()
+  provider: string;
 
   @IsDate()
   requestedAt: Date;
