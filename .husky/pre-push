@@ -2,4 +2,4 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 yarn enforce-branch-name '(hotfix|feature|release|bugfix|chore|docs|refactor|test)/.+' -- ignore 'master|develop|main'
-yarn lint && yarn build
+yarn lint && yarn build:local

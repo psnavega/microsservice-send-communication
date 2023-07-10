@@ -1,0 +1,43 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  annotations:
+    run.googleapis.com/ingress: internal-and-cloud-load-balancing
+    run.googleapis.com/ingress-status: internal-and-cloud-load-balancing
+  labels:
+    cloud.googleapis.com/location: southamerica-east1
+  name: vidav-vale-saude-ms-communication
+  namespace: '876066173950'
+  selfLink: /apis/serving.knative.dev/v1/namespaces/876066173950/services/vidav-vale-saude-ms-communication
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/maxScale: '100'
+        run.googleapis.com/vpc-access-connector: vss-serverless-connector
+        run.googleapis.com/vpc-access-egress: private-ranges-only
+      labels:
+        run.googleapis.com/startupProbeType: Default
+      name: vidav-vale-saude-ms-communication-00001-yet
+    spec:
+      containerConcurrency: 1
+      containers:
+        - image: southamerica-east1-docker.pkg.dev/hml-amazonia-vidav-vale-saude/hml-amazonia-vidav-vale-saude-registry/vidav-vale-saude-ms-communication@sha256:6a29a59b29ee5feb394c3221542f3dbfcf44b71281866339e3a91fe0eb57005d
+          ports:
+            - containerPort: 80
+              name: http1
+          resources:
+            limits:
+              cpu: 200m
+              memory: 256Mi
+          startupProbe:
+            failureThreshold: 1
+            periodSeconds: 240
+            tcpSocket:
+              port: 80
+            timeoutSeconds: 240
+      serviceAccountName: 876066173950-compute@developer.gserviceaccount.com
+      timeoutSeconds: 30
+  traffic:
+    - latestRevision: true
+      percent: 100

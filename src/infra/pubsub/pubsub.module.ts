@@ -8,7 +8,7 @@ import { PubSubServiceMock } from '../../../mocks/pubsub.service.mock';
     {
       provide: PubSubService,
       useFactory: () => {
-        if (process.env.NODE_ENV === 'test') {
+        if (process.env.NODE_ENV === 'local') {
           return new PubSubServiceMock();
         }
         return new PubSubService();

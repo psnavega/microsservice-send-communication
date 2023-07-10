@@ -1,0 +1,9 @@
+include:
+  - project: devops-commons/gitlab-cicd-pipelines
+    ref: main
+    file: pipelines/vss-node/main.yaml
+
+variables:
+  WAIT_QUALITY_GATE: "true"
+  FAIL_PIPELINE_IF_SONAR_FAIL: "false"
+  USE_YAML_TO_DEPLOY: "true"

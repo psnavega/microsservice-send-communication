@@ -1,6 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { WinstonModule } from 'nest-winston';
+import winston from 'winston';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -11,9 +13,17 @@ async function bootstrap() {
     }),
   );
 
-  const PORT = process.env.PORT || 3000;
-  await app.listen(3000, () => {
-    console.log(`Server started at port ${PORT}`);
+  const logger = WinstonModule.createLogger({
+    level: 'info',
+    format: winston.format.json(),
+    transports: [new winston.transports.Console()],
+  });
+
+  app.useLogger(logger);
+
+  const port = process.env.PORT || 3000;
+  await app.listen(port, () => {
+    console.log(`Server started at port ${port}`);
   });
 }
 bootstrap();

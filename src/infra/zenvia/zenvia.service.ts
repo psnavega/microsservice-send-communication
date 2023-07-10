@@ -6,7 +6,7 @@ import { ICommunicationStrategy } from '@/communication/domains/interfaces/commu
 export class ZenviaService implements ICommunicationStrategy {
   private readonly client: Client;
   constructor() {
-    const token = process.env.ZENVIA_API_KEY;
+    const token = process.env.MS_COMMUNICATION_ZENVIA_API_KEY;
     this.client = new Client(token);
   }
 
@@ -20,7 +20,11 @@ export class ZenviaService implements ICommunicationStrategy {
     const sms = this.client.getChannel('sms');
     const content = new TextContent(body);
     try {
-      await sms.sendMessage(process.env.ZENVIA_NUMBER, to, content);
+      await sms.sendMessage(
+        process.env.MS_COMMUNICATION_ZENVIA_NUMBER,
+        to,
+        content,
+      );
       return { provider: 'zenvia' };
     } catch (err) {
       throw err;
