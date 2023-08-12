@@ -1,30 +1,36 @@
 version: "3.3"
 services:
-  nodeserver:
-    container_name: nodeserver
+  nodeserver-communication:
+    container_name: nodeserver-communication
     build:
       context: .
       dockerfile: Dockerfile
       args:
-        - ENVIRONMENT=${NODE_ENV}
+        - ENVIRONMENT=local
     volumes:
       - .:/usr/src/app
       - ./node_modules:/usr/src/app/node_modules
-    environment:
-      - GOOGLE_PUBSUB_TOPIC_NAME=${GOOGLE_PUBSUB_TOPIC_NAME}
-      - GOOGLE_PROJECT_ID=${GOOGLE_PROJECT_ID}
-      - PORT=${PORT}
-      - MONGO_URL=${MONGO_URL}
-      - NODE_ENV=${NODE_ENV}
-      - MS_COMMUNICATION_SENDGRID_API_KEY=${MS_COMMUNICATION_SENDGRID_API_KEY}
-      - MS_COMMUNICATION_ZENVIA_API_KEY=${MS_COMMUNICATION_ZENVIA_API_KEY}
-      - MS_COMMUNICATION_ZENVIA_NUMBER=${MS_COMMUNICATION_ZENVIA_NUMBER}
+    command: npm run start:local
+    env_file:
+      - .env
     depends_on:
       - mongo
+    links:
+      - "mongo"
+    networks:
+      - my_network
+    ports:
+      - 3000:3000
   mongo:
-    container_name: vss-mongo
+    container_name: mongo
     image: mongo:4.0
     volumes:
         - ./../mongodb/data:/data/db
     ports:
-      - "27017:27017"
+      - 27017:27017
+    networks:
+      - my_network
+networks:
+  my_network:
+    external:
+      name: my_network

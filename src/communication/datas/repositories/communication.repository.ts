@@ -10,7 +10,7 @@ export class CommunicationRepository
 {
   private collection: any;
 
-  constructor(private db: MongoService) {}
+  constructor(private readonly db: MongoService) {}
 
   async create({
     obj,

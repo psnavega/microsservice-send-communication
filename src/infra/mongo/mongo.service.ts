@@ -4,28 +4,31 @@ import { LoggerService } from '../logger/logger.service';
 
 @Injectable()
 export class MongoService {
-  private client: MongoClient | null;
-  private db: Db | null;
+  private client: MongoClient | null = null;
+  private db: Db | null = null;
   private loggerService: LoggerService;
 
   constructor(loggerService: LoggerService) {
-    this.client = null;
-    this.db = null;
     this.loggerService = loggerService;
+    this.connect();
   }
 
   async connect() {
-    const mongoUrl = process.env.MONGO_URL || 'mongodb://mongo:27017/vss_local';
+    if (this.db) {
+      return this.db;
+    }
+
+    const mongoUrl = 'mongodb://mongo:27017/vss_local';
+
     try {
       const mongoClient = await MongoClient.connect(mongoUrl);
 
       this.client = mongoClient;
       this.db = mongoClient.db();
-      this.loggerService.log('Connected to MongoDB');
 
       return this.db;
     } catch (error) {
-      throw new Error(`Cannot connect to MongoDB: ${error}`);
+      throw new Error(`Cannot connect to MongoDB: ${error.message}`);
     }
   }
 
