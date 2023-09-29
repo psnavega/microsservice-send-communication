@@ -12,6 +12,8 @@ import { SendgridModule } from '@/infra/sendgrid/sendgrid.module';
 import { ZenviaModule } from '@/infra/zenvia/zenvia.module';
 import { ZenviaService } from '@/infra/zenvia/zenvia.service';
 import { MailService } from '@sendgrid/mail';
+import { PubSub } from '@google-cloud/pubsub';
+import { MailTrapService } from '@/infra/mailtrap/mailtrap.service';
 
 @Module({
   imports: [
@@ -30,6 +32,8 @@ import { MailService } from '@sendgrid/mail';
     SendgridService,
     ZenviaService,
     MailService,
+    PubSub,
+    MailTrapService,
   ],
 })
 export class CommunicationModule {}

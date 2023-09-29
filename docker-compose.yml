@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      target: build
       args:
         - ENVIRONMENT=local
     volumes:
@@ -20,7 +21,7 @@ services:
     networks:
       - my_network
     ports:
-      - 3000:3000
+      - 3010:3010
   mongo:
     container_name: mongo
     image: mongo:4.0
@@ -32,5 +33,5 @@ services:
       - my_network
 networks:
   my_network:
-    external:
-      name: my_network
+    name: my_network
+    external: true

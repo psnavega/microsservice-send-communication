@@ -7,6 +7,7 @@ import {
 import { PubSubService } from '@/infra/pubsub/pubsub.service';
 import { MongoService } from '@/infra/mongo/mongo.service';
 import { LoggerService } from '@/infra/logger/logger.service';
+import { PubSub } from '@google-cloud/pubsub';
 
 describe('CreateCommunicationUseCase', () => {
   let createCommunicationUseCase: CreateCommunicationUseCase;
@@ -22,11 +23,8 @@ describe('CreateCommunicationUseCase', () => {
 
     communicationRepository = new CommunicationRepository(mongoService);
 
-    queueService = new PubSubService();
-
     createCommunicationUseCase = new CreateCommunicationUseCase(
       communicationRepository,
-      queueService,
     );
   });
 

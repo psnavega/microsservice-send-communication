@@ -11,6 +11,7 @@ import { CommunicationStrategy } from '@/communication/datas/strategies/communic
 import { ZenviaService } from '@/infra/zenvia/zenvia.service';
 import { ZenviaModule } from '@/infra/zenvia/zenvia.module';
 import { MailService } from '@sendgrid/mail';
+import { MailTrapService } from '@/infra/mailtrap/mailtrap.service';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { MailService } from '@sendgrid/mail';
     ZenviaService,
     CommunicationStrategy,
     MailService,
+    MailTrapService,
   ],
 })
 export class RobotModule {}

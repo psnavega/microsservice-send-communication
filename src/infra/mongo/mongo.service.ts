@@ -1,15 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { MongoClient, Collection, Db } from 'mongodb';
 import { LoggerService } from '../logger/logger.service';
 
 @Injectable()
-export class MongoService {
+export class MongoService implements OnModuleInit, OnModuleDestroy {
   private client: MongoClient | null = null;
   private db: Db | null = null;
-  private loggerService: LoggerService;
 
-  constructor(loggerService: LoggerService) {
-    this.loggerService = loggerService;
+  constructor(private readonly loggerService: LoggerService) {}
+  onModuleDestroy() {
+    this.close();
+  }
+
+  onModuleInit() {
     this.connect();
   }
 
@@ -18,7 +21,7 @@ export class MongoService {
       return this.db;
     }
 
-    const mongoUrl = 'mongodb://mongo:27017/vss_local';
+    const mongoUrl = process.env.MONGO_URL || 'mongodb://mongo:27017/vss_local';
 
     try {
       const mongoClient = await MongoClient.connect(mongoUrl);
