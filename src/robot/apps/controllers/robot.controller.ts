@@ -3,11 +3,9 @@ import { UpdateCommunicationUseCase } from '@/robot/datas/use-cases/update-commu
 
 @Controller('robot')
 export class RobotController {
-  private updateCommunicationUseCase: UpdateCommunicationUseCase;
-
-  constructor(updateCommunicationUseCase: UpdateCommunicationUseCase) {
-    this.updateCommunicationUseCase = updateCommunicationUseCase;
-  }
+  constructor(
+    private readonly updateCommunicationUseCase: UpdateCommunicationUseCase,
+  ) {}
 
   @Post('communication/send')
   async sendCommunication(

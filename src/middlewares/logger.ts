@@ -4,11 +4,7 @@ import { LoggerService } from '@/infra/logger/logger.service';
 
 @Injectable()
 export class AppLoggerMiddleware implements NestMiddleware {
-  private logger: LoggerService;
-
-  constructor(logger: LoggerService) {
-    this.logger = logger;
-  }
+  constructor(private readonly logger: LoggerService) {}
 
   use(request: Request, response: Response, next: NextFunction): void {
     const { ip, method, baseUrl: path } = request;

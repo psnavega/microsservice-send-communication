@@ -4,16 +4,24 @@ import {
   CommunicationStatus,
   CommunicationType,
 } from '@/shared/enums/communicationType.enum';
-import { PubSubService } from '@/infra/pubsub/pubsub.service';
 import { IPubSubService } from '@/shared/interfaces/pubSub.interface';
 import { ICreateCommunication } from '@/shared/interfaces/createCommunication.interface';
+import { PubSubServiceMock } from 'mocks/pubsub.service.mock';
+import { PubSubService } from '@/infra/pubsub/pubsub.service';
 
 @Injectable()
 export class CreateCommunicationUseCase {
+  private queueService: IPubSubService;
+
   constructor(
     private readonly communicationRepository: CommunicationRepository,
-    @Inject(PubSubService) private readonly queueService: IPubSubService,
-  ) {}
+  ) {
+    if (process.env.NODE_ENV === 'local') {
+      this.queueService = new PubSubServiceMock();
+    } else {
+      this.queueService = new PubSubService();
+    }
+  }
 
   async execute({
     type,

@@ -6,13 +6,13 @@ import * as winston from 'winston';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors();
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
       forbidNonWhitelisted: true,
     }),
   );
-
   const logger = WinstonModule.createLogger({
     level: 'info',
     format: winston.format.json(),

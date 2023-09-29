@@ -15,16 +15,10 @@ import { ICreateCommunication } from '@/shared/interfaces/createCommunication.in
 
 @Controller('api')
 export class CommunicationController {
-  private CreateCommunicationUseCase: CreateCommunicationUseCase;
-  private getCommunnicationUseCase: GetCommunicationUseCase;
-
   constructor(
-    CreateCommunicationUseCase: CreateCommunicationUseCase,
-    getCommunicationUseCase: GetCommunicationUseCase,
-  ) {
-    this.CreateCommunicationUseCase = CreateCommunicationUseCase;
-    this.getCommunnicationUseCase = getCommunicationUseCase;
-  }
+    private readonly createCommunicationUseCase: CreateCommunicationUseCase,
+    private readonly getCommunicationUseCase: GetCommunicationUseCase,
+  ) {}
 
   @Post(':type/send')
   async sendCommunication(
@@ -36,7 +30,7 @@ export class CommunicationController {
 
     await schema.validateAsync(communicationData);
 
-    const reponse = await this.CreateCommunicationUseCase.execute({
+    const reponse = await this.createCommunicationUseCase.execute({
       type,
       communicationData,
     });
@@ -48,7 +42,7 @@ export class CommunicationController {
   async getCommunication(
     @Param('id') id: string,
   ): Promise<ICreateCommunication> {
-    const response = await this.getCommunnicationUseCase.execute({ id });
+    const response = await this.getCommunicationUseCase.execute({ id });
 
     if (!response) throw new NotFoundException('Communication not found');
 

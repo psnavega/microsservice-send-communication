@@ -15,12 +15,10 @@ describe.only('CommunicationController', () => {
   let createCommunicationUseCase: CreateCommunicationUseCase;
   let getCommunicationUseCase: GetCommunicationUseCase;
   let communicationRepository: CommunicationRepository;
-  let queueService: PubSubService;
 
   beforeEach(() => {
     createCommunicationUseCase = new CreateCommunicationUseCase(
       communicationRepository,
-      queueService,
     );
 
     getCommunicationUseCase = new GetCommunicationUseCase(

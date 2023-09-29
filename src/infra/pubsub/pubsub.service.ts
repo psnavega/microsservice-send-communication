@@ -31,4 +31,3 @@ export class PubSubService implements IPubSubService {
     }
   }
 }
-export { PubSub };

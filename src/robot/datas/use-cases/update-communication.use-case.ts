@@ -6,16 +6,10 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class UpdateCommunicationUseCase {
-  private communicationRepository: CommunicationRepository;
-  private communicationStrategy: CommunicationStrategy;
-
   constructor(
-    communicationRepository: CommunicationRepository,
-    communicationStrategy: CommunicationStrategy,
-  ) {
-    this.communicationRepository = communicationRepository;
-    this.communicationStrategy = communicationStrategy;
-  }
+    private readonly communicationRepository: CommunicationRepository,
+    private readonly communicationStrategy: CommunicationStrategy,
+  ) {}
 
   async execute(
     communicationData: ICreateCommunication,
