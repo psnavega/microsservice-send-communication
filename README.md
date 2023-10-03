@@ -7,18 +7,7 @@
 
   <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
     <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
+
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
@@ -60,9 +49,11 @@ $ yarn run test:cov
 
 ## Running with Docker (Recommended)
 
-You will need to have Docker and Docker Compose installed on your machine, as well as availability on ports 27017 and 3000.
+You will need to have Docker and Docker Compose installed on your machine, as well as availability on ports 27017 and 3010.
 
-Finally, there is an .env.example file in the repository for development purposes. Remove the .example extension, leaving only .env.
+Finally, there is an .env.example file in the repository for development purposes. Remove the .example extension, leaving only .env
+
+If you're running integrated in environment B2B, leave filename as .env.example
 
 After that, run the following command at the root of the project:
 
@@ -102,6 +93,11 @@ Expected response
 }
 ```
 
+## Contribution
+
+- Open a new branch like gitflow. Example: \`feature/what-your-branch-does\`.
+- When finished, open a Merge Request (MR) to the \`develop\` branch and handle the card on the Asana/Jira board to advise that you have finished and wait for a reviewer.
+
 ## Executing testing within Docker
 
 Once the container is up and running, execute the following command ***within the container application shell***
@@ -116,10 +112,17 @@ yarn test:cov
 
 ***It is strongly recommended that every resource added to this microservice be properly tested - unit and integration when applicable***
 
+## Considerations
+
+Ensure that all mandatories envs were set on .env.example when running inside B2B environment, or in .env if you are running on compose inside this repository
+
+Mandatory environments will be below a region in .env.example/.env
+
+To test send emails will be necessary have account on mailtrap, just set authentications on env on the specific field and zenvia key
+
+## Powered
+
+Powered by Vale Saúde
 
 
 
-
-## License
-
-Nest is [MIT licensed](LICENSE).
