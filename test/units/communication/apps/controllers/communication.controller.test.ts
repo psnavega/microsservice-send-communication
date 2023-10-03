@@ -10,7 +10,7 @@ import {
 import { NotFoundException } from '@nestjs/common';
 import { CommunicationSMSEntity } from '@/communication/domains/entities/communicationSMS.entity';
 
-describe.only('CommunicationController', () => {
+describe('CommunicationController', () => {
   let communicationController: CommunicationController;
   let createCommunicationUseCase: CreateCommunicationUseCase;
   let getCommunicationUseCase: GetCommunicationUseCase;

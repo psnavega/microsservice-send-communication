@@ -36,7 +36,6 @@ export class MailTrapService implements ICommunicationStrategy {
 
       return { provider: 'MailTrap' };
     } catch (error) {
-      console.warn('FALHOU AQUI');
       throw new Error('Failed to send email');
     }
   }
