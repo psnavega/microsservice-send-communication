@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { SendgridService } from '@/infra/sendgrid/sendgrid.service';
 import { ICommunicationStrategy } from '@/communication/domains/interfaces/communicationStrategy.interface';
-import { ZenviaService } from '@/infra/zenvia/zenvia.service';
 import { CommunicationType } from '@/shared/enums/communicationType.enum';
 import { MailTrapService } from '@/infra/mailtrap/mailtrap.service';
+import { PgMaisService } from '@/infra/pgmais/pgmais.service';
 
 @Injectable()
 export class CommunicationStrategy implements ICommunicationStrategy {
   constructor(
     private readonly sendgridService: SendgridService,
-    private readonly zenviaService: ZenviaService,
+    private readonly pgMaisService: PgMaisService,
     private readonly mailTrapService: MailTrapService,
   ) {}
 
@@ -29,7 +29,7 @@ export class CommunicationStrategy implements ICommunicationStrategy {
         process.env.NODE_ENV === 'local'
           ? this.mailTrapService
           : this.sendgridService,
-      [CommunicationType.SMS]: this.zenviaService,
+      [CommunicationType.SMS]: this.pgMaisService,
     };
 
     return getProvider[type];

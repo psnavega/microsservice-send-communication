@@ -7,6 +7,7 @@ import { LoggerModule } from './infra/logger/logger.module';
 import { RobotModule } from './robot/robot.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { MongoService } from './infra/mongo/mongo.service';
+import { PgmaisModule } from './infra/pgmais/pgmais.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { MongoService } from './infra/mongo/mongo.service';
     PubSubModule,
     LoggerModule,
     RobotModule,
+    PgmaisModule,
   ],
   providers: [
     {

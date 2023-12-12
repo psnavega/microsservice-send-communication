@@ -5,23 +5,20 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: build
-      args:
-        - ENVIRONMENT=local
+      target: local
     volumes:
       - .:/usr/src/app
-      - ./node_modules:/usr/src/app/node_modules
+      - /usr/src/app/node_modules
     command: npm run start:local
-    env_file:
-      - .env
-    depends_on:
-      - mongo
-    links:
-      - "mongo"
-    networks:
-      - my_network
     ports:
       - 3010:3010
+    env_file:
+      - .env.example
+    depends_on:
+      - mongo
+    networks:
+      - my_network
+
   mongo:
     container_name: mongo
     image: mongo:4.0

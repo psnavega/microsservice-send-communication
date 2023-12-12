@@ -6,7 +6,7 @@ import {
 } from '@/shared/enums/communicationType.enum';
 import { IPubSubService } from '@/shared/interfaces/pubSub.interface';
 import { ICreateCommunication } from '@/shared/interfaces/createCommunication.interface';
-import { PubSubServiceMock } from 'mocks/pubsub.service.mock';
+import { PubSubServiceMock } from '../../../../mocks/pubsub.service.mock';
 import { PubSubService } from '@/infra/pubsub/pubsub.service';
 
 @Injectable()
