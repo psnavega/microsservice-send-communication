@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { CommunicationController } from './apps/controllers/communication.controller';
 import { CommunicationRepository } from './datas/repositories/communication.repository';
-import { MongoModule } from '@/infra/mongo/mongo.module';
 import { CreateCommunicationUseCase } from './datas/use-cases/create-communication.usecase';
 import { PubSubModule } from '@/infra/pubsub/pubsub.module';
 import { GetCommunicationUseCase } from './datas/use-cases/get-communication.usecase';
@@ -15,15 +14,10 @@ import { MailService } from '@sendgrid/mail';
 import { PubSub } from '@google-cloud/pubsub';
 import { MailTrapService } from '@/infra/mailtrap/mailtrap.service';
 import { PgMaisService } from '@/infra/pgmais/pgmais.service';
+import { PrismaService } from '@/infra/config/prisma/prisma.service';
 
 @Module({
-  imports: [
-    MongoModule,
-    PubSubModule,
-    LoggerModule,
-    SendgridModule,
-    ZenviaModule,
-  ],
+  imports: [PubSubModule, LoggerModule, SendgridModule, ZenviaModule],
   controllers: [CommunicationController],
   providers: [
     CommunicationRepository,
@@ -36,6 +30,7 @@ import { PgMaisService } from '@/infra/pgmais/pgmais.service';
     PubSub,
     MailTrapService,
     PgMaisService,
+    PrismaService,
   ],
 })
 export class CommunicationModule {}

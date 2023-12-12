@@ -16,7 +16,7 @@ describe('PgMaisService', () => {
 
       const response = await pgMaisService.send({
         to: '11999999999',
-        text: 'Teste',
+        body: 'Teste',
       });
 
       expect(response).toEqual({ provider: 'pgmais', id: '123456789' });
@@ -30,7 +30,7 @@ describe('PgMaisService', () => {
       try {
         await pgMaisService.send({
           to: '11999999999',
-          text: 'Teste',
+          body: 'Teste',
         });
       } catch (error) {
         expect(error).toBeDefined();

@@ -1,27 +1,18 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CommunicationRepository } from '../repositories/communication.repository';
 import {
   CommunicationStatus,
   CommunicationType,
 } from '@/shared/enums/communicationType.enum';
-import { IPubSubService } from '@/shared/interfaces/pubSub.interface';
 import { ICreateCommunication } from '@/shared/interfaces/createCommunication.interface';
-import { PubSubServiceMock } from '../../../../mocks/pubsub.service.mock';
 import { PubSubService } from '@/infra/pubsub/pubsub.service';
 
 @Injectable()
 export class CreateCommunicationUseCase {
-  private queueService: IPubSubService;
-
   constructor(
     private readonly communicationRepository: CommunicationRepository,
-  ) {
-    if (process.env.NODE_ENV === 'local') {
-      this.queueService = new PubSubServiceMock();
-    } else {
-      this.queueService = new PubSubService();
-    }
-  }
+    private readonly pubSubService: PubSubService,
+  ) {}
 
   async execute({
     type,
@@ -30,7 +21,44 @@ export class CreateCommunicationUseCase {
     type: CommunicationType;
     communicationData: ICreateCommunication;
   }): Promise<{ id: string; message: string }> {
-    const obj = {
+    const createCommunicationDto = this.mountDto({
+      communicationData,
+      type,
+    });
+
+    const registerCreated = await this.createRegister({
+      createCommunicationDto,
+      type,
+    });
+
+    try {
+      await this.pubSubService.sendMessage({
+        message: createCommunicationDto,
+      });
+    } catch (err) {
+      await this.communicationRepository.updateErrorCase({
+        id: registerCreated.id,
+        status: CommunicationStatus.ERROR,
+        description: err.message,
+        sendedAt: new Date(),
+      });
+      throw err;
+    }
+
+    return {
+      id: registerCreated.id,
+      message: 'Comunicação agendada com sucesso',
+    };
+  }
+
+  private mountDto({
+    communicationData,
+    type,
+  }: {
+    communicationData: ICreateCommunication;
+    type: CommunicationType;
+  }) {
+    return {
       ...communicationData,
       type,
       status: CommunicationStatus.SCHEDULED,
@@ -38,30 +66,30 @@ export class CreateCommunicationUseCase {
       sendedAt: new Date(),
       updatedAt: new Date(),
     };
+  }
 
-    const { id } = await this.communicationRepository.create({ obj });
+  private async createRegister({
+    createCommunicationDto,
+    type,
+  }: {
+    createCommunicationDto: ICreateCommunication;
+    type: CommunicationType;
+  }) {
+    const { id } = await this.communicationRepository.create({
+      type,
+      createCommunicationDto,
+    });
 
-    Object.assign(obj, { id });
+    return this.findRegisterWithId({ createCommunicationDto, id });
+  }
 
-    try {
-      await this.queueService.sendMessage({
-        message: obj,
-      });
-    } catch (err) {
-      await this.communicationRepository.update({
-        id,
-        fieldsToUpdate: {
-          status: CommunicationStatus.ERROR,
-          statusMessage: err.message,
-          updatedAt: new Date(),
-        },
-      });
-      throw err;
-    }
-
-    return {
-      id,
-      message: 'Comunicação agendada com sucesso',
-    };
+  private findRegisterWithId({
+    createCommunicationDto,
+    id,
+  }: {
+    createCommunicationDto: ICreateCommunication;
+    id: string;
+  }) {
+    return Object.assign(createCommunicationDto, { id });
   }
 }

@@ -1,58 +1,84 @@
 import { Injectable } from '@nestjs/common';
-import { MongoService } from '@/infra/mongo/mongo.service';
 import { CommunicationRepositoryInterface } from '@/communication/domains/repositories/communication.repository';
-import { ObjectId } from 'mongodb';
 import { ICreateCommunication } from '@/shared/interfaces/createCommunication.interface';
+import { PrismaService } from '@/infra/config/prisma/prisma.service';
+import { CommunicationEntity } from '@/communication/domains/entities/communication.entity';
 
 @Injectable()
 export class CommunicationRepository
   implements CommunicationRepositoryInterface
 {
-  private collection: any;
-
-  constructor(private readonly db: MongoService) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   async create({
-    obj,
+    createCommunicationDto,
+    type,
   }: {
-    obj: ICreateCommunication;
-  }): Promise<{ id: string }> {
-    const collection = await this.db.getCollection('communication');
-
-    const { insertedId } = await collection.insertOne({
-      ...obj,
+    createCommunicationDto: ICreateCommunication;
+    type: string;
+  }): Promise<CommunicationEntity> {
+    return this.prismaService.communication.create({
+      data: {
+        to: createCommunicationDto.to,
+        body: createCommunicationDto.body,
+        subject: createCommunicationDto.subject,
+        type: type,
+      },
     });
-
-    return { id: insertedId.toHexString() };
   }
 
-  async get({ id }: { id: string }): Promise<any> {
-    const collection = await this.db.getCollection('communication');
-
-    const response = await collection.findOne({ _id: new ObjectId(id) });
-
-    return { response };
+  async get({ id }: { id: string }): Promise<CommunicationEntity> {
+    return this.prismaService.communication.findUnique({
+      where: { id },
+      include: {
+        detail: true,
+      },
+    });
   }
 
-  async update({
+  async updateSuccessCase({
     id,
-    fieldsToUpdate,
+    provider,
+    status,
+    sendedAt,
   }: {
     id: string;
-    fieldsToUpdate: { [key: string]: any };
-  }): Promise<any> {
-    const collection = await this.db.getCollection('communication');
-    const updateObject = { $set: {} };
+    provider: string;
+    status: string;
+    sendedAt: Date;
+  }): Promise<CommunicationEntity> {
+    return this.prismaService.communication.update({
+      where: { id },
+      data: {
+        provider,
+        status,
+        sendedAt,
+      },
+    });
+  }
 
-    for (const [key, value] of Object.entries(fieldsToUpdate)) {
-      updateObject.$set[key] = value;
-    }
-
-    const response = await collection.updateOne(
-      { _id: new ObjectId(id) },
-      updateObject,
-    );
-
-    return { response };
+  async updateErrorCase({
+    id,
+    status,
+    sendedAt,
+    description,
+  }: {
+    id: string;
+    status: string;
+    sendedAt: Date;
+    description: string;
+  }): Promise<CommunicationEntity> {
+    return this.prismaService.communication.update({
+      where: { id },
+      data: {
+        status,
+        sendedAt,
+        detail: {
+          create: {
+            message: description,
+          },
+        },
+      },
+    });
   }
 }

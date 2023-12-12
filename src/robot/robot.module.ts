@@ -4,7 +4,6 @@ import { CommunicationRepository } from '@/communication/datas/repositories/comm
 import { LoggerModule } from '@/infra/logger/logger.module';
 import { UpdateCommunicationUseCase } from './datas/use-cases/update-communication.use-case';
 import { CommunicationModule } from '@/communication/communication.module';
-import { MongoModule } from '@/infra/mongo/mongo.module';
 import { SendgridService } from '@/infra/sendgrid/sendgrid.service';
 import { SendgridModule } from '@/infra/sendgrid/sendgrid.module';
 import { CommunicationStrategy } from '@/communication/datas/strategies/communicationStrategy.strategy';
@@ -13,15 +12,10 @@ import { ZenviaModule } from '@/infra/zenvia/zenvia.module';
 import { MailService } from '@sendgrid/mail';
 import { MailTrapService } from '@/infra/mailtrap/mailtrap.service';
 import { PgMaisService } from '@/infra/pgmais/pgmais.service';
+import { PrismaService } from '@/infra/config/prisma/prisma.service';
 
 @Module({
-  imports: [
-    LoggerModule,
-    CommunicationModule,
-    MongoModule,
-    SendgridModule,
-    ZenviaModule,
-  ],
+  imports: [LoggerModule, CommunicationModule, SendgridModule, ZenviaModule],
   controllers: [RobotController],
   providers: [
     UpdateCommunicationUseCase,
@@ -32,6 +26,7 @@ import { PgMaisService } from '@/infra/pgmais/pgmais.service';
     MailService,
     MailTrapService,
     PgMaisService,
+    PrismaService,
   ],
 })
 export class RobotModule {}

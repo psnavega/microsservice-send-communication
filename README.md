@@ -18,33 +18,33 @@
 ## Installation
 
 ```bash
-$ yarn install
+$ npm install
 ```
 
 ## Running the app
 
 ```bash
 # development
-$ yarn run start
+$ npm start
 
 # watch mode
-$ yarn run start:dev
+$ npm start:dev
 
 # production mode
-$ yarn run start:prod
+$ npm start:prod
 ```
 
 ## Test
 
 ```bash
 # unit tests
-$ yarn run test
+$ npm test
 
 # e2e tests
-$ yarn run test:e2e
+$ npm test:e2e
 
 # test coverage
-$ yarn run test:cov
+$ npm test:cov
 ```
 
 ## Running with Docker (Recommended)
@@ -56,6 +56,11 @@ Finally, there is an .env.example file in the repository for development purpose
 If you're running integrated in environment B2B, leave filename as .env.example
 
 After that, run the following command at the root of the project:
+
+Running this script
+```bash
+$ cp .env.example .env
+```
 
 ```bash
 $ docker-compose up

@@ -1,0 +1,38 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model communication {
+  id          String    @id @default(uuid())
+  to          String
+  body        String
+  from        String?
+  subject     String?
+  type        String
+  status      String    @default("SCHEDULED")
+  provider    String?
+  requestedAt DateTime  @default(now())
+  sendedAt    DateTime?
+  updatedAt   DateTime  @updatedAt
+
+  detail   detail? @relation(fields: [detailId], references: [id])
+  detailId String?
+
+  @@unique([detailId], name: "unique_communication_detail")
+}
+
+model detail {
+  id            String         @id @default(uuid())
+  message       String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  communication communication?
+}

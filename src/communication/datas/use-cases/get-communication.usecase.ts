@@ -9,8 +9,6 @@ export class GetCommunicationUseCase {
   ) {}
 
   async execute({ id }: { id: string }): Promise<ICreateCommunication> {
-    const { response } = await this.communicationRepository.get({ id });
-
-    return response;
+    return this.communicationRepository.get({ id });
   }
 }

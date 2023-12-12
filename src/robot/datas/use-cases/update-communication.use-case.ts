@@ -19,30 +19,58 @@ export class UpdateCommunicationUseCase {
         communicationData,
       );
 
-      await this.communicationRepository.update({
+      await this.updateCommunicationStatusSuccess({
         id: communicationData.id,
-        fieldsToUpdate: {
-          provider,
-          status: CommunicationStatus.SENT,
-          updatedAt: new Date(),
-          sendedAt: new Date(),
-        },
+        provider,
       });
 
       return {
         message: 'OK',
       };
     } catch (err) {
-      await this.communicationRepository.update({
+      await this.updateCommunicationStatusError({
         id: communicationData.id,
-        fieldsToUpdate: {
-          status: CommunicationStatus.ERROR,
-          statusMessage: err.message,
-          updatedAt: new Date(),
-          sendedAt: new Date(),
-        },
+        status: CommunicationStatus.ERROR,
+        sendedAt: new Date(),
+        description: err.message,
       });
       throw err;
     }
+  }
+
+  private async updateCommunicationStatusSuccess({
+    id,
+    provider,
+  }: {
+    id: string;
+    provider: string;
+  }) {
+    await this.communicationRepository.updateSuccessCase({
+      id,
+      provider,
+      status: CommunicationStatus.SENT,
+      sendedAt: new Date(),
+    });
+
+    return provider;
+  }
+
+  private async updateCommunicationStatusError({
+    id,
+    status,
+    sendedAt,
+    description,
+  }: {
+    id: string;
+    status: string;
+    sendedAt: Date;
+    description: string;
+  }) {
+    return this.communicationRepository.updateErrorCase({
+      id,
+      status,
+      sendedAt,
+      description,
+    });
   }
 }

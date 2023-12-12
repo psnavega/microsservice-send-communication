@@ -15,17 +15,19 @@ services:
     env_file:
       - .env.example
     depends_on:
-      - mongo
+      - mysqlprisma
     networks:
       - my_network
 
-  mongo:
-    container_name: mongo
-    image: mongo:4.0
-    volumes:
-        - ./../mongodb/data:/data/db
+  mysqlprisma:
+    image: mysql:8.0
+    container_name: mysqlprisma
     ports:
-      - 27017:27017
+      - 3306:3306
+    env_file:
+      - .env.example
+    volumes:
+      - /var/lib/mysql
     networks:
       - my_network
 networks:

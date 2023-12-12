@@ -1,21 +1,37 @@
 import { CommunicationType } from '@/shared/enums/communicationType.enum';
 import { ICreateCommunication } from '@/shared/interfaces/createCommunication.interface';
-
-interface UpdateCommunicationFields {
-  id: string;
-  fieldsToUpdate: Record<string, any>;
-}
+import { CommunicationEntity } from '../entities/communication.entity';
 
 export interface CommunicationRepositoryInterface {
   create({
-    obj,
+    createCommunicationDto,
     type,
   }: {
-    obj: ICreateCommunication;
+    createCommunicationDto: ICreateCommunication;
     type: CommunicationType;
-  }): Promise<{ id: string }>;
+  }): Promise<CommunicationEntity>;
 
-  get({ id }: { id: string }): Promise<any>;
+  get({ id }: { id: string }): Promise<CommunicationEntity>;
 
-  update({ id, fieldsToUpdate }: UpdateCommunicationFields): Promise<any>;
+  updateSuccessCase({
+    id,
+    provider,
+    status,
+    sendedAt,
+  }: {
+    id: string;
+    provider: string;
+    status: string;
+    sendedAt: Date;
+  }): Promise<CommunicationEntity>;
+
+  updateErrorCase({
+    id,
+    status,
+    sendedAt,
+  }: {
+    id: string;
+    status: string;
+    sendedAt: Date;
+  }): Promise<CommunicationEntity>;
 }
