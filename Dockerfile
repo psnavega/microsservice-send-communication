@@ -8,22 +8,6 @@ COPY . .
 ARG ENVIRONMENT
 RUN yarn build:${ENVIRONMENT}
 
-FROM node:18.10 AS prod
-WORKDIR /usr/src/app
-
-COPY --from=builder /usr/src/app/dist ./dist
-COPY --from=builder /usr/src/app/node_modules ./node_modules
-COPY --from=builder /usr/src/app/package.json ./
-
-RUN apt-get update && apt-get install -y nginx
-
-RUN rm /etc/nginx/sites-enabled/default
-COPY docker/nginx.conf /etc/nginx/conf.d/
-
-CMD service nginx start && node ./dist/src/main.js
-
-EXPOSE 80
-
 FROM node:18.10 AS local
 
 WORKDIR /usr/src/app
@@ -37,3 +21,20 @@ RUN npm run build:local
 COPY . .
 
 CMD [ "npm", "run", "start" ]
+
+FROM node:18.10 AS development
+WORKDIR /usr/src/app
+
+COPY --from=builder /usr/src/app/dist ./dist
+COPY --from=builder /usr/src/app/node_modules ./node_modules
+COPY --from=builder /usr/src/app/package.json ./
+
+RUN apt-get update && apt-get install -y nginx \
+    && apt-get clean
+
+RUN rm /etc/nginx/sites-enabled/default
+COPY docker/nginx.conf /etc/nginx/conf.d/
+
+CMD service nginx start && node ./dist/src/main.js
+
+EXPOSE 80
