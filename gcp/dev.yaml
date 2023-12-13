@@ -6,9 +6,9 @@ metadata:
     run.googleapis.com/ingress-status: internal-and-cloud-load-balancing
   labels:
     cloud.googleapis.com/location: southamerica-east1
-  name: vidav-vale-saude-ms-communication
+  name: vale-saude-ms-comunicacao
   namespace: '86061648839'
-  selfLink: /apis/serving.knative.dev/v1/namespaces/86061648839/services/vidav-vale-saude-ms-communication
+  selfLink: /apis/serving.knative.dev/v1/namespaces/86061648839/services/vale-saude-ms-comunicacao
 spec:
   template:
     metadata:
