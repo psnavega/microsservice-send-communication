@@ -11,9 +11,9 @@ datasource db {
 }
 
 model communication {
-  id          String    @id @default(uuid())
+  id          String    @id @default(uuid()) @db.VarChar(36)
   to          String
-  body        String
+  body        String   @db.MediumText
   from        String?
   subject     String?
   type        String
@@ -30,7 +30,7 @@ model communication {
 }
 
 model detail {
-  id            String         @id @default(uuid())
+  id            String         @id @default(uuid()) @db.VarChar(36)
   message       String
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt

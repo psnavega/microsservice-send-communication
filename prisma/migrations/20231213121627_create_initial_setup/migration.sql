@@ -1,8 +1,8 @@
 -- CreateTable
 CREATE TABLE `communication` (
-    `id` VARCHAR(191) NOT NULL,
+    `id` VARCHAR(36) NOT NULL,
     `to` VARCHAR(191) NOT NULL,
-    `body` VARCHAR(191) NOT NULL,
+    `body` MEDIUMTEXT NOT NULL,
     `from` VARCHAR(191) NULL,
     `subject` VARCHAR(191) NULL,
     `type` VARCHAR(191) NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE `communication` (
 
 -- CreateTable
 CREATE TABLE `detail` (
-    `id` VARCHAR(191) NOT NULL,
+    `id` VARCHAR(36) NOT NULL,
     `message` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
