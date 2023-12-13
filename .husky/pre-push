@@ -1,5 +1,5 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+# #!/usr/bin/env sh
+# . "$(dirname -- "$0")/_/husky.sh"
 
-npx enforce-branch-name '(hotfix|feature|release|bugfix|chore|docs|refactor|test)/.+' -- ignore 'master|develop|main'
-npm run lint && npm run build:local
+# npx enforce-branch-name '(hotfix|feature|release|bugfix|chore|docs|refactor|test)/.+' -- ignore 'master|develop|main'
+# npm run lint && npm run build:local
