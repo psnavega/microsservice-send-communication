@@ -1,12 +1,12 @@
 FROM node:18.10 AS builder
 WORKDIR /usr/src/app
 
-COPY package*.json yarn.lock tsconfig*.json ./
-RUN yarn install --frozen-lockfile
+COPY package*.json tsconfig*.json ./
+RUN npm install
 
 COPY . .
 ARG ENVIRONMENT
-RUN yarn build:${ENVIRONMENT}
+RUN npm run build:${ENVIRONMENT}
 
 FROM node:18.10 AS local
 
