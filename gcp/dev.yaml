@@ -18,7 +18,7 @@ spec:
         run.googleapis.com/vpc-access-egress: private-ranges-only
       labels:
         run.googleapis.com/startupProbeType: Default
-      name: vidav-vale-saude-ms-communication-00001-kiq
+      name: vidav-vale-saude-ms-communication-00001-jiq
     spec:
       containerConcurrency: 1
       containers:
