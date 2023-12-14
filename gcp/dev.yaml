@@ -48,8 +48,8 @@ spec:
                   name: MS_COMMUNICATION_DATABASE_URL
             - name: MS_COMMUNICATION_SENGDRID_API_KEY
               secretKeyRef:
-                  key: '1'
-                  name: SENDGRID_API_KEY
+                key: '1'
+                name: SENDGRID_API_KEY
             - name: MS_COMMUNICATION_PGMAIS_TOKEN
               valueFrom:
                 secretKeyRef:
