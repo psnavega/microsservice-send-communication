@@ -43,14 +43,14 @@ spec:
               value: dev
             - name: MS_COMMUNICATION_DATABASE_URL
               valueFrom:
-              secretKeyRef:
-                key: '1'
-                name: MS_COMMUNICATION_DATABASE_URL
+                secretKeyRef:
+                  key: '1'
+                  name: MS_COMMUNICATION_DATABASE_URL
             - name: MS_COMMUNICATION_SENDGRID_API_KEY
               valueFrom:
-              secretKeyRef:
-                key: '1'
-                name: MS_COMMUNICATION_SENDGRID_API_KEY
+                secretKeyRef:
+                  key: '1'
+                  name: MS_COMMUNICATION_SENDGRID_API_KEY
             - name: MS_COMMUNICATION_PGMAIS_TOKEN
               valueFrom:
                 secretKeyRef:
