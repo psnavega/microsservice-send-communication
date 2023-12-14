@@ -15,6 +15,7 @@ WORKDIR /usr/src/app
 COPY package*.json tsconfig*.json ./
 
 RUN npm install
+RUN npx prisma generate
 
 RUN npm run build:local
 
@@ -31,9 +32,6 @@ COPY --from=builder /usr/src/app/package.json ./
 
 RUN apt-get update && apt-get install -y nginx \
     && apt-get clean
-
-RUN npm install
-RUN npx prisma generate
 
 RUN rm /etc/nginx/sites-enabled/default
 COPY docker/nginx.conf /etc/nginx/conf.d/

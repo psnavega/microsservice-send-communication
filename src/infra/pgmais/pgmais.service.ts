@@ -8,10 +8,12 @@ export class PgMaisService implements ICommunicationStrategy {
 
   constructor() {
     this.apiPgMais = axios.create({
-      baseURL: process.env.PGMAIS_URL,
+      baseURL:
+        process.env.MS_COMMUNICATION_PGMAIS_URL ||
+        'https://apicanais.pgmais.io/v1/apps',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `${process.env.PGMAIS_TOKEN}`,
+        Authorization: `${process.env.MS_COMMUNCATION_PGMAIS_TOKEN}`,
       },
     });
   }

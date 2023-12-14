@@ -10,7 +10,7 @@ describe('PgMaisService', () => {
 
   describe('send', () => {
     it('should call send with successfully', async () => {
-      nock(`${process.env.PGMAIS_URL}`).post('/sms/messages').reply(200, {
+      nock(`${process.env.MS_COMMUNICATION_PGMAIS_URL}`).post('/sms/messages').reply(200, {
         id: '123456789',
       });
 
@@ -23,7 +23,7 @@ describe('PgMaisService', () => {
     });
 
     it('should thrown exception if response is 500', async () => {
-      nock(`${process.env.PGMAIS_URL}`)
+      nock(`${process.env.MS_COMMUNICATION_PGMAIS_URL}`)
         .post('/sms/messages')
         .reply(500, 'Internal Server Error');
 
