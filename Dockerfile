@@ -15,7 +15,6 @@ WORKDIR /usr/src/app
 COPY package*.json tsconfig*.json ./
 
 RUN npm install
-RUN npx prisma generate
 
 RUN npm run build:local
 
@@ -36,6 +35,6 @@ RUN apt-get update && apt-get install -y nginx \
 RUN rm /etc/nginx/sites-enabled/default
 COPY docker/nginx.conf /etc/nginx/conf.d/
 
-CMD service nginx start && node ./dist/src/main.js
+CMD service nginx start && npx prisma generate && node ./dist/src/main.js
 
 EXPOSE 80

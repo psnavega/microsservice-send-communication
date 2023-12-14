@@ -39,8 +39,6 @@ spec:
           env:
             - name: MS_COMMUNICATION_PGMAIS_URL
               value: https://apicanais.pgmais.io/v1/apps
-            - name: PORT
-              value: 3000
             - name: NODE_ENV
               value: dev
             - name: MS_COMMUNICATION_DATABASE_URL
