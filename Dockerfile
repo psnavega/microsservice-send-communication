@@ -8,6 +8,8 @@ COPY . .
 ARG ENVIRONMENT
 RUN npm run build:${ENVIRONMENT}
 
+COPY prisma ./prisma
+
 FROM node:18.10 AS local
 
 WORKDIR /usr/src/app
