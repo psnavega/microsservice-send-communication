@@ -11,7 +11,9 @@ export class PubSubServiceMock implements IPubSubService {
   }: {
     message: ICreateCommunication;
   }): Promise<void> {
-    const url = `http://localhost:${process.env.PORT}/robot/communication/send`;
+    const url = `http://localhost:${
+      process.env.PORT || 3000
+    }/robot/communication/send`;
     const intervalToSend = 5000; // 5 seconds
 
     const encodedMessage = Buffer.from(JSON.stringify(message)).toString(

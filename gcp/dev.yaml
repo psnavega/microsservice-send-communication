@@ -36,6 +36,27 @@ spec:
             tcpSocket:
               port: 80
             timeoutSeconds: 240
+          env:
+            - name: MS_COMMUNICATION_PGMAIS_URL
+              value: https://apicanais.pgmais.io/v1/apps
+            - name: PORT
+              value: 3000
+            - name: NODE_ENV
+              value: dev
+            - name: MS_COMMUNICATION_DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  key: '1'
+                  name: MS_COMMUNICATION_DATABASE_URL
+            - name: MS_COMMUNICATION_SENGDRID_API_KEY
+              secretKeyRef:
+                  key: '1'
+                  name: SENDGRID_API_KEY
+            - name: MS_COMMUNICATION_PGMAIS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  key: '1'
+                  name: MS_COMMUNICATION_PGMAIS_TOKEN
       serviceAccountName: 86061648839-compute@developer.gserviceaccount.com
       timeoutSeconds: 30
   traffic:
