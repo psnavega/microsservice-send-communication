@@ -30,6 +30,7 @@ WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/dist ./dist
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/package.json ./
+COPY --from=builder /usr/src/app/prisma ./prisma
 
 RUN apt-get update && apt-get install -y nginx \
     && apt-get clean
