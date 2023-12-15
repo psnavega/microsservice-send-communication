@@ -18,7 +18,7 @@ spec:
         run.googleapis.com/vpc-access-egress: private-ranges-only
       labels:
         run.googleapis.com/startupProbeType: Default
-      name: vale-saude-ms-comunicacao-00011-liq
+      name: vale-saude-ms-comunicacao-00012-liq
     spec:
       containerConcurrency: 1
       containers:
