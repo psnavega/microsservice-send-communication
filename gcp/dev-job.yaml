@@ -22,7 +22,7 @@ spec:
           maxRetries: 1
           timeoutSeconds: 600
           containers:
-            - image: southamerica-east1-docker.pkg.dev/dev-amazonia-vidav-vale-saude/dev-amazonia-vidav-vale-saude-registry/vidav-vale-saude-ms-communication:latest-git-sha
+            - image: southamerica-east1-docker.pkg.dev/dev-amazonia-vidav-vale-saude/dev-amazonia-vidav-vale-saude-registry/api:latest-git-sha
               resources:
                 limits:
                   cpu: 1000m
