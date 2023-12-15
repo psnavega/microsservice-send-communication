@@ -5,9 +5,7 @@ import { ICommunicationStrategy } from '@/communication/domains/interfaces/commu
 @Injectable()
 export class SendgridService implements ICommunicationStrategy {
   constructor(private readonly mailService: MailService) {
-    this.mailService.setApiKey(
-      process.env.MS_COMMUNICATION_B2B_SENDGRID_API_KEY,
-    );
+    this.mailService.setApiKey(process.env.MS_COMMUNICATION_SENDGRID_API_KEY);
   }
 
   async send({
