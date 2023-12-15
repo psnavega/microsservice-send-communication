@@ -5,6 +5,7 @@ import { WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
 
 async function bootstrap() {
+  console.warn(process.env);
   const app = await NestFactory.create(AppModule);
   app.enableCors();
   app.useGlobalPipes(
