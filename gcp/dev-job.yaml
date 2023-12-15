@@ -1,7 +1,7 @@
 apiVersion: run.googleapis.com/v1
 kind: Job
 metadata:
-  name: vidav-vale-saude-ms-communication
+  name: vidav-vale-saude-ms-communication-job
   namespace: '86061648839'
   selfLink: /apis/run.googleapis.com/v1/namespaces/86061648839/jobs/vidav-vale-saude-ms-communication-job
   labels:
