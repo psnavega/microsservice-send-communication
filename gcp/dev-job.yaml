@@ -28,16 +28,6 @@ spec:
                   cpu: 1000m
                   memory: 512Mi
               command: [ 'npx', 'prisma', 'migrate', 'deploy' ]
-              volumeMounts:
-                - name: GOOGLE_CLOUD_STORAGE_KEY_FILE
-                  mountPath: /secrets/GOOGLE_CLOUD_STORAGE_KEY_FILE
-                  readOnly: true
-                - name: GOOGLE_PUBSUB_KEY_FILE
-                  mountPath: /secrets/GOOGLE_PUBSUB_KEY_FILE
-                  readOnly: true
-                - name: GOOGLE_CLOUD_SCHEDULER_KEY_FILE
-                  mountPath: /secrets/GOOGLE_CLOUD_SCHEDULER_KEY_FILE
-                  readOnly: true
               env:
                 - name: MS_COMMUNICATION_DATABASE_URL
                   valueFrom:
