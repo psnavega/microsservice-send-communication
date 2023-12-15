@@ -7,3 +7,4 @@ variables:
   WAIT_QUALITY_GATE: "true"
   FAIL_PIPELINE_IF_SONAR_FAIL: "false"
   USE_YAML_TO_DEPLOY: "true"
+  DEPLOY_AND_EXECUTE_JOB: "true"

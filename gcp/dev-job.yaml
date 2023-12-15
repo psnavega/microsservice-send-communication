@@ -1,0 +1,47 @@
+apiVersion: run.googleapis.com/v1
+kind: Job
+metadata:
+  name: vidav-vale-saude-api-job
+  namespace: '86061648839'
+  selfLink: /apis/run.googleapis.com/v1/namespaces/86061648839/jobs/vidav-vale-saude-api-job
+  labels:
+    cloud.googleapis.com/location: southamerica-east1
+spec:
+  template:
+    metadata:
+      annotations:
+        run.googleapis.com/vpc-access-egress: all-traffic
+        run.googleapis.com/execution-environment: gen2
+        run.googleapis.com/cloudsql-instances: dev-amazonia-vidav-vale-saude:southamerica-east1:dev-amazonia-vidav-vale-saude-mysql
+        run.googleapis.com/vpc-access-connector: projects/dev-amazonia-vidav-vale-saude/locations/southamerica-east1/connectors/vss-serverless-connector
+    spec:
+      taskCount: 1
+      template:
+        spec:
+          serviceAccountName: 86061648839-compute@developer.gserviceaccount.com
+          maxRetries: 1
+          timeoutSeconds: 600
+          containers:
+            - image: southamerica-east1-docker.pkg.dev/dev-amazonia-vidav-vale-saude/dev-amazonia-vidav-vale-saude-registry/vidav-vale-saude-ms-communication:latest-git-sha
+              resources:
+                limits:
+                  cpu: 1000m
+                  memory: 512Mi
+              command: [ 'npx', 'prisma', 'migrate', 'deploy' ]
+              volumeMounts:
+                - name: GOOGLE_CLOUD_STORAGE_KEY_FILE
+                  mountPath: /secrets/GOOGLE_CLOUD_STORAGE_KEY_FILE
+                  readOnly: true
+                - name: GOOGLE_PUBSUB_KEY_FILE
+                  mountPath: /secrets/GOOGLE_PUBSUB_KEY_FILE
+                  readOnly: true
+                - name: GOOGLE_CLOUD_SCHEDULER_KEY_FILE
+                  mountPath: /secrets/GOOGLE_CLOUD_SCHEDULER_KEY_FILE
+                  readOnly: true
+              env:
+                - name: MS_COMMUNICATION_DATABASE_URL
+                  valueFrom:
+                    secretKeyRef:
+                      key: '1'
+                      name: MS_COMMUNICATION_DATABASE_URLCOMMON_IUGU_API_KEY
+
