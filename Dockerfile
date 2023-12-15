@@ -38,6 +38,6 @@ RUN apt-get update && apt-get install -y nginx \
 RUN rm /etc/nginx/sites-enabled/default
 COPY docker/nginx.conf /etc/nginx/conf.d/
 
-CMD service nginx start && npx prisma generate && node ./dist/src/main.js
+CMD npx prisma generate && node ./dist/src/main.js
 
-EXPOSE 80
+EXPOSE 3000
