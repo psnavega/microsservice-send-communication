@@ -33,5 +33,5 @@ spec:
                   valueFrom:
                     secretKeyRef:
                       key: '1'
-                      name: MS_COMMUNICATION_DATABASE_URLCOMMON_IUGU_API_KEY
+                      name: MS_COMMUNICATION_DATABASE_URL
 
