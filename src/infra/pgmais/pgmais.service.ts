@@ -13,7 +13,7 @@ export class PgMaisService implements ICommunicationStrategy {
         'https://apicanais.pgmais.io/v1/apps',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `${process.env.MS_COMMUNCATION_PGMAIS_TOKEN}`,
+        Authorization: `${process.env.MS_COMMUNICATION_PGMAIS_TOKEN}`,
       },
     });
   }

@@ -18,7 +18,7 @@ spec:
         run.googleapis.com/vpc-access-egress: private-ranges-only
       labels:
         run.googleapis.com/startupProbeType: Default
-      name: vale-saude-ms-comunicacao-00008-liq
+      name: vale-saude-ms-comunicacao-00009-liq
     spec:
       containerConcurrency: 1
       containers:
@@ -52,7 +52,7 @@ spec:
                   key: '1'
                   name: MS_COMMUNICATION_SENDGRID_API_KEY
             - name: MS_COMMUNICATION_PGMAIS_TOKEN
-              valueFrom:
+              valueFrom: MS_COMMUNICATION_PGMAIS_TOKEN
                 secretKeyRef:
                   key: '1'
                   name: MS_COMMUNICATION_PGMAIS_TOKEN
