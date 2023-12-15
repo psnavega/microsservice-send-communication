@@ -6,5 +6,4 @@ include:
 variables:
   WAIT_QUALITY_GATE: "true"
   FAIL_PIPELINE_IF_SONAR_FAIL: "false"
-  DEPLOY_AND_EXECUTE_JOB: "true"
   USE_YAML_TO_DEPLOY: "true"
