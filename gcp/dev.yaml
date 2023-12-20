@@ -6,9 +6,9 @@ metadata:
     run.googleapis.com/ingress-status: internal-and-cloud-load-balancing
   labels:
     cloud.googleapis.com/location: southamerica-east1
-  name: vale-saude-ms-comunicacao
+  name: vidav-vale-saude-ms-communication
   namespace: '86061648839'
-  selfLink: /apis/serving.knative.dev/v1/namespaces/86061648839/services/vale-saude-ms-comunicacao
+   selfLink: /apis/serving.knative.dev/v1/namespaces/86061648839/services/vidav-vale-saude-ms-communication
 spec:
   template:
     metadata:
@@ -21,7 +21,7 @@ spec:
     spec:
       containerConcurrency: 1
       containers:
-        - image: southamerica-east1-docker.pkg.dev/dev-amazonia-vidav-vale-saude/dev-amazonia-vidav-vale-saude-registry/ms-communication:0ca81e7d
+        - image: southamerica-east1-docker.pkg.dev/dev-amazonia-vidav-vale-saude/dev-amazonia-vidav-vale-saude-registry/vidav-vale-saude-ms-communication:1.0.0
           ports:
             - containerPort: 80
               name: http1
