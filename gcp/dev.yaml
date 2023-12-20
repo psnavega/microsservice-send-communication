@@ -8,7 +8,7 @@ metadata:
     cloud.googleapis.com/location: southamerica-east1
   name: vidav-vale-saude-ms-communication
   namespace: '86061648839'
-   selfLink: /apis/serving.knative.dev/v1/namespaces/86061648839/services/vidav-vale-saude-ms-communication
+  selfLink: /apis/serving.knative.dev/v1/namespaces/86061648839/services/vidav-vale-saude-ms-communication
 spec:
   template:
     metadata:
