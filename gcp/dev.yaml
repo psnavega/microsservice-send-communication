@@ -6,9 +6,9 @@ metadata:
     run.googleapis.com/ingress-status: internal-and-cloud-load-balancing
   labels:
     cloud.googleapis.com/location: southamerica-east1
-  name: vidav-vale-saude-ms-communication
+  name: vale-saude-ms-comunicacao
   namespace: '86061648839'
-  selfLink: /apis/serving.knative.dev/v1/namespaces/86061648839/services/vidav-vale-saude-ms-communication
+  selfLink: /apis/serving.knative.dev/v1/namespaces/86061648839/services/vale-saude-ms-comunicacao
 spec:
   template:
     metadata:
@@ -16,12 +16,13 @@ spec:
         autoscaling.knative.dev/maxScale: '3'
         autoscaling.knative.dev/minScale: '1'
         run.googleapis.com/vpc-access-connector: vss-serverless-connector
+        run.googleapis.com/vpc-access-egress: private-ranges-only
       labels:
         run.googleapis.com/startupProbeType: Default
     spec:
       containerConcurrency: 1
       containers:
-        - image: southamerica-east1-docker.pkg.dev/dev-amazonia-vidav-vale-saude/dev-amazonia-vidav-vale-saude-registry/vidav-vale-saude-ms-communication:1.0.0
+        image: southamerica-east1-docker.pkg.dev/dev-amazonia-vidav-vale-saude/dev-amazonia-vidav-vale-saude-registry/ms-communication:90983e13
           ports:
             - containerPort: 80
               name: http1
