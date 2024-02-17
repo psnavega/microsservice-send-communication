@@ -15,6 +15,10 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+<p>Is a microsservice ready for production, this structure were developed as multiprovider and multiple sender. Nowadays the app count with sender email and sender sms</p>
+
+<p>More details here: <a href='https://www.postman.com/restless-astronaut-188899/workspace/public/documentation/27941823-48b76034-8ad7-4bb5-a260-bf2e4deba03a'></a></p>
+
 ## Installation
 
 ```bash
@@ -49,11 +53,9 @@ $ npm test:cov
 
 ## Running with Docker (Recommended)
 
-You will need to have Docker and Docker Compose installed on your machine, as well as availability on ports 27017 and 3010.
+You will need to have Docker and Docker Compose installed on your machine, as well as availability on ports 3306 and 3010.
 
 Finally, there is an .env.example file in the repository for development purposes. Remove the .example extension, leaving only .env
-
-If you're running integrated in environment B2B, leave filename as .env.example
 
 After that, run the following command at the root of the project:
 
@@ -119,7 +121,7 @@ yarn test:cov
 
 ## Considerations
 
-Ensure that all mandatories envs were set on .env.example when running inside B2B environment, or in .env if you are running on compose inside this repository
+Ensure that all mandatories envs were set on .env.example when running
 
 Mandatory environments will be below a region in .env.example/.env
 
@@ -127,7 +129,7 @@ To test send emails will be necessary have account on mailtrap, just set authent
 
 ## Powered
 
-Powered by Vale Saúde
+Powered by Patrick Navega
 
 
 
